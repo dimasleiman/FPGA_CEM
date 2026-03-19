@@ -28,6 +28,7 @@ fpga-dual-system/
 +-- docs/
 |   +-- interface_spec.md
 |   +-- de10_lite_bringup.md
+|   +-- de10_lite_target.md
 |   `-- quartus_project_setup.md
 +-- board/
 |   `-- de10_lite/
@@ -40,6 +41,9 @@ fpga-dual-system/
 +-- shared/
 |   `-- protocol/
 |       `-- frame_format.md
++-- sim/
+|   +-- tb_de10_lite_wrappers.vhd
+|   `-- tb_fpga1_fpga2_integration.vhd
 +-- fpga1_acquisition/
 |   +-- src/
 |   |   +-- top/
@@ -121,6 +125,7 @@ Simulation extras:
 Compile after both FPGA 1 and FPGA 2 source sets:
 
 - `sim/tb_fpga1_fpga2_integration.vhd`
+- `sim/tb_de10_lite_wrappers.vhd` for the DE10-Lite wrapper and synchronized-reset path
 
 See `docs/quartus_project_setup.md` for the exact Quartus project split and import steps.
 See `docs/de10_lite_bringup.md` for the wrapper-based DE10-Lite bring-up path.

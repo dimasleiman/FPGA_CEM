@@ -8,6 +8,16 @@ Confirmed hardware target for both projects:
 - Device: Intel/Altera MAX 10 `10M50DAF484C7G`
 - Clock source: onboard `50 MHz`
 
+The source-controlled Quartus inputs in this repository are:
+
+- wrapper and core VHDL source files
+- `add_sources.tcl` / `add_de10_lite_wrapper_sources.tcl`
+- `de10_lite_placeholder.qsf`
+
+Treat any local Quartus-generated `db/`, `output_files/`, `.qws`, or auto-generated
+project revision content as a convenience copy and prefer the wrapper VHDL, Tcl
+scripts, and placeholder `.qsf` files as the repository source of truth.
+
 ## FPGA 1 Project
 
 - Project directory: `fpga1_acquisition/quartus/`
@@ -28,6 +38,9 @@ Helper script:
 
 - `fpga1_acquisition/quartus/add_sources.tcl`
 - `fpga1_acquisition/quartus/add_de10_lite_wrapper_sources.tcl`
+
+Both scripts set the family, exact device, top-level entity, and `VHDL_2008`
+input mode before adding synthesis sources.
 
 Placeholder constraints:
 
@@ -59,6 +72,9 @@ Helper script:
 - `fpga2_display/quartus/add_sources.tcl`
 - `fpga2_display/quartus/add_de10_lite_wrapper_sources.tcl`
 
+Both scripts set the family, exact device, top-level entity, and `VHDL_2008`
+input mode before adding synthesis sources.
+
 Placeholder constraints:
 
 - `fpga2_display/quartus/de10_lite_placeholder.qsf`
@@ -76,12 +92,13 @@ For each FPGA:
 3. Set the target device to `10M50DAF484C7G` if the project wizard has not already done so.
 4. Source the local `add_de10_lite_wrapper_sources.tcl` script from the Quartus Tcl console.
 5. Copy the local `de10_lite_placeholder.qsf` content into the project `.qsf`, or transfer the same placeholder assignments manually.
-6. Fill in the exact DE10-Lite pin locations and I/O standards in the `.qsf`.
-7. Map `clock_50_i` to the DE10-Lite 50 MHz clock input.
-8. Map `reset_source_i` to a chosen switch or push-button and set `G_RESET_ACTIVE_LEVEL` to match that source.
-9. Map `uart_tx_o` and `uart_rx_i` to the chosen board-to-board GPIO path.
-10. For FPGA 2, map `leds_o(3 downto 0)` to any four of the DE10-Lite user LEDs.
-11. Compile.
+6. Confirm the imported assignments still show `MAX 10`, `10M50DAF484C7G`, and `VHDL_2008`.
+7. Fill in the exact DE10-Lite pin locations and I/O standards in the `.qsf`.
+8. Map `clock_50_i` to the DE10-Lite 50 MHz clock input.
+9. Map `reset_source_i` to a chosen switch or push-button and set `G_RESET_ACTIVE_LEVEL` to match that source.
+10. Map `uart_tx_o` and `uart_rx_i` to the chosen board-to-board GPIO path.
+11. For FPGA 2, map `leds_o(3 downto 0)` to any four of the DE10-Lite user LEDs.
+12. Compile.
 
 ## Cross-FPGA Connection
 
@@ -99,10 +116,14 @@ For each FPGA:
 ## Reset Note
 
 - The board wrapper now converts a chosen board-facing reset source into the active-high synchronous reset expected by the core RTL.
-- The wrapper synchronizes reset to `clock_50_i` but does not debounce a push-button input.
+- The synchronizer samples reset on `clock_50_i`, so assertion and release are both synchronous to the board clock.
+- With the current wrapper configuration, reset stays active until the external source has been inactive for two clock cycles.
+- The wrapper does not debounce a push-button input.
 - For first hardware bring-up, a switch is the simpler reset source.
 
 ## Simulation Compile Note
 
 - The end-to-end integration testbench is `sim/tb_fpga1_fpga2_integration.vhd`.
 - Compile it only after both FPGA 1 and FPGA 2 source sets and packages are already in the work library.
+- The wrapper-level bring-up testbench is `sim/tb_de10_lite_wrappers.vhd`.
+- Compile it after `board/de10_lite/common/reset_sync.vhd`, both source sets, and both DE10-Lite wrapper entities.

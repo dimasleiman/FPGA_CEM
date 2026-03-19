@@ -3,6 +3,7 @@ set src_dir [file normalize [file join $this_dir .. src]]
 
 set_global_assignment -name FAMILY "MAX 10"
 set_global_assignment -name DEVICE 10M50DAF484C7G
+set_global_assignment -name VHDL_INPUT_VERSION VHDL_2008
 set_global_assignment -name TOP_LEVEL_ENTITY fpga2_top
 set_global_assignment -name VHDL_FILE [file join $src_dir pkg fpga2_pkg.vhd]
 set_global_assignment -name VHDL_FILE [file join $src_dir link_rx uart_rx.vhd]

@@ -51,6 +51,11 @@ Per-project files:
 These set the device family and top-level wrapper but intentionally leave all
 pin locations and I/O standards for manual completion.
 
+These files, together with the wrapper VHDL, are the source-controlled bring-up
+inputs. If a local Quartus-generated `db/`, `output_files/`, `.qws`, or project
+revision file also exists, treat it as a convenience copy and prefer these
+source-controlled files as the repository source of truth.
+
 ## Reset Strategy
 
 The DE10-Lite wrapper converts a board-facing reset source into the
@@ -60,7 +65,8 @@ Current wrapper behavior:
 
 - `reset_source_i` is treated as an external board signal
 - `G_RESET_ACTIVE_LEVEL` defines whether that source is active-high or active-low
-- `reset_sync.vhd` synchronizes reset assertion and release to `clock_50_i`
+- `reset_sync.vhd` samples reset on `clock_50_i`, so assertion and release are both synchronous
+- with the current wrapper default of two stages, reset remains active until the external source has been inactive for two clock cycles
 - the wrapper passes the synchronized active-high reset into the core `rst`
 
 What this does not do yet:
@@ -72,6 +78,7 @@ What this does not do yet:
 Practical recommendation:
 
 - for first bring-up, use a stable switch as `reset_source_i`
+- hold the chosen reset source steady long enough to span multiple `clock_50_i` edges during release
 - if you prefer a push-button later, consider adding a debouncer after basic bring-up succeeds
 
 ## Simple First Bring-Up Plan
@@ -118,6 +125,9 @@ In `fpga1_acquisition/quartus/de10_lite_placeholder.qsf`, fill in:
    If your chosen switch should assert reset when driven low, keep the default `'0'`.
    If your chosen switch should assert reset when driven high, change it to `'1'`.
 
+The placeholder file already fixes the family, exact device, top-level wrapper,
+and `VHDL_2008` input mode. Only fill in the unresolved board-specific items.
+
 ## Manual QSF Fill-In: FPGA 2
 
 In `fpga2_display/quartus/de10_lite_placeholder.qsf`, fill in:
@@ -143,6 +153,9 @@ In `fpga2_display/quartus/de10_lite_placeholder.qsf`, fill in:
    If your chosen switch should assert reset when driven low, keep the default `'0'`.
    If your chosen switch should assert reset when driven high, change it to `'1'`.
 
+The placeholder file already fixes the family, exact device, top-level wrapper,
+and `VHDL_2008` input mode. Only fill in the unresolved board-specific items.
+
 ## Quartus Checklist: FPGA 1 Board
 
 1. Create or open the Quartus project in `fpga1_acquisition/quartus/`.
@@ -150,11 +163,12 @@ In `fpga2_display/quartus/de10_lite_placeholder.qsf`, fill in:
 3. Set the top-level entity to `de10_lite_fpga1_wrapper`.
 4. Run `source add_de10_lite_wrapper_sources.tcl` in the Quartus Tcl console.
 5. Copy the placeholder assignments from `de10_lite_placeholder.qsf` into the project `.qsf`, or enter them manually.
-6. Fill in the exact pin and I/O standard for `clock_50_i`.
-7. Fill in the exact pin and I/O standard for `reset_source_i`.
-8. Fill in the exact pin and I/O standard for `uart_tx_o`.
-9. Set `G_RESET_ACTIVE_LEVEL` if needed.
-10. Compile.
+6. Confirm the imported assignments still show `MAX 10`, `10M50DAF484C7G`, and `VHDL_2008`.
+7. Fill in the exact pin and I/O standard for `clock_50_i`.
+8. Fill in the exact pin and I/O standard for `reset_source_i`.
+9. Fill in the exact pin and I/O standard for `uart_tx_o`.
+10. Set `G_RESET_ACTIVE_LEVEL` if needed.
+11. Compile.
 
 ## Quartus Checklist: FPGA 2 Board
 
@@ -163,12 +177,13 @@ In `fpga2_display/quartus/de10_lite_placeholder.qsf`, fill in:
 3. Set the top-level entity to `de10_lite_fpga2_wrapper`.
 4. Run `source add_de10_lite_wrapper_sources.tcl` in the Quartus Tcl console.
 5. Copy the placeholder assignments from `de10_lite_placeholder.qsf` into the project `.qsf`, or enter them manually.
-6. Fill in the exact pin and I/O standard for `clock_50_i`.
-7. Fill in the exact pin and I/O standard for `reset_source_i`.
-8. Fill in the exact pin and I/O standard for `uart_rx_i`.
-9. Fill in the exact pin and I/O standard for `leds_o(3 downto 0)`.
-10. Set `G_RESET_ACTIVE_LEVEL` if needed.
-11. Compile.
+6. Confirm the imported assignments still show `MAX 10`, `10M50DAF484C7G`, and `VHDL_2008`.
+7. Fill in the exact pin and I/O standard for `clock_50_i`.
+8. Fill in the exact pin and I/O standard for `reset_source_i`.
+9. Fill in the exact pin and I/O standard for `uart_rx_i`.
+10. Fill in the exact pin and I/O standard for `leds_o(3 downto 0)`.
+11. Set `G_RESET_ACTIVE_LEVEL` if needed.
+12. Compile.
 
 ## What You Still Need To Fill In Manually In Quartus
 
@@ -180,3 +195,13 @@ For each FPGA project:
 4. fill in the I/O standard assignments
 5. choose the exact GPIO/header path for the board-to-board UART link
 6. for FPGA 2, choose which four of the ten LEDs drive `leds_o(3 downto 0)`
+
+## Wrapper-Level Simulation
+
+Before hardware bring-up, you can simulate the wrapper path with:
+
+- `sim/tb_de10_lite_wrappers.vhd`
+
+That testbench keeps the core RTL separate, instantiates both DE10-Lite wrappers,
+and checks that the active-low board-facing reset source still produces the
+expected FPGA1-to-FPGA2 UART/LED behavior through the synchronized reset path.

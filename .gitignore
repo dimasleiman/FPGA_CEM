@@ -1,0 +1,46 @@
+# IDE and editor metadata
+.idea/
+.vscode/
+*.code-workspace
+
+# OS-generated files
+Thumbs.db
+Desktop.ini
+
+# Intel Quartus generated state and build outputs
+**/quartus/db/
+**/quartus/incremental_db/
+**/quartus/output_files/
+**/quartus/*.qws
+**/quartus/*.smsg
+**/quartus/*.summary
+**/quartus/*.rpt
+**/quartus/*.jdi
+**/quartus/*.bak
+**/quartus/*.pin
+**/quartus/*.sof
+**/quartus/*.pof
+**/quartus/*.jam
+**/quartus/*.jbc
+**/quartus/*.cdf
+**/quartus/*.qdf
+**/quartus/*.hexout
+
+# Common HDL simulation artifacts
+transcript
+modelsim.ini
+vsim.wlf
+*.wlf
+*.vcd
+*.vpd
+*.fst
+*.ghw
+*.log
+*.jou
+*.pb
+*.cf
+work/
+questa_lib/
+simv
+simv.daidir/
+csrc/

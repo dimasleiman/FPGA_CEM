@@ -1,0 +1,36 @@
+set_global_assignment -name FAMILY "MAX 10"
+set_global_assignment -name DEVICE 10M50DAF484C7G
+set_global_assignment -name TOP_LEVEL_ENTITY de10_lite_fpga2_wrapper
+
+# Add sources by running:
+#   source add_de10_lite_wrapper_sources.tcl
+
+# Fill in the board-specific assignments below in Quartus after you choose the
+# exact DE10-Lite resources and the board-to-board UART path.
+# Suggested first bring-up:
+#   clock_50_i     -> DE10-Lite CLOCK_50
+#   reset_source_i -> one chosen slide switch
+#   uart_rx_i      -> one chosen GPIO/header input pin
+#   leds_o[3:0]    -> four chosen user LEDs
+
+# Clock input
+# set_location_assignment <CLOCK_50_PIN> -to clock_50_i
+# set_instance_assignment -name IO_STANDARD "<FILL_ME>" -to clock_50_i
+
+# Reset source
+# set_location_assignment <RESET_SOURCE_PIN> -to reset_source_i
+# set_instance_assignment -name IO_STANDARD "<FILL_ME>" -to reset_source_i
+
+# UART receive input
+# set_location_assignment <UART_RX_PIN> -to uart_rx_i
+# set_instance_assignment -name IO_STANDARD "<FILL_ME>" -to uart_rx_i
+
+# LED outputs
+# set_location_assignment <LED0_PIN> -to leds_o[0]
+# set_location_assignment <LED1_PIN> -to leds_o[1]
+# set_location_assignment <LED2_PIN> -to leds_o[2]
+# set_location_assignment <LED3_PIN> -to leds_o[3]
+# set_instance_assignment -name IO_STANDARD "<FILL_ME>" -to leds_o[0]
+# set_instance_assignment -name IO_STANDARD "<FILL_ME>" -to leds_o[1]
+# set_instance_assignment -name IO_STANDARD "<FILL_ME>" -to leds_o[2]
+# set_instance_assignment -name IO_STANDARD "<FILL_ME>" -to leds_o[3]

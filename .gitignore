@@ -44,3 +44,4 @@ questa_lib/
 simv
 simv.daidir/
 csrc/
+.ghdl*

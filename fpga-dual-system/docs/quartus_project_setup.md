@@ -1,129 +1,105 @@
-# Quartus Project Setup
+# Configuration des Projets Quartus
 
-Create two separate Quartus projects so each FPGA can be built independently.
+Creer deux projets Quartus distincts afin que chaque FPGA puisse etre compile
+independamment.
 
-Confirmed hardware target for both projects:
+Cible confirmee pour les deux projets :
 
-- Board: Terasic DE10-Lite
-- Device: Intel/Altera MAX 10 `10M50DAF484C7G`
-- Clock source: onboard `50 MHz`
+- Carte : Terasic DE10-Lite
+- Composant : `10M50DAF484C7G`
+- Horloge de reference : `50 MHz`
 
-The source-controlled Quartus inputs in this repository are:
+Ce qui est versionne dans ce depot :
 
-- wrapper and core VHDL source files
-- `add_sources.tcl` / `add_de10_lite_wrapper_sources.tcl`
-- `de10_lite_placeholder.qsf`
+- le RTL VHDL reutilisable
+- les wrappers DE10-Lite
+- les scripts Tcl d'ajout de sources
+- les fichiers `.qsf` placeholders
+- les fichiers `.sdc` deja presents dans les dossiers Quartus
 
-Treat any local Quartus-generated `db/`, `output_files/`, `.qws`, or auto-generated
-project revision content as a convenience copy and prefer the wrapper VHDL, Tcl
-scripts, and placeholder `.qsf` files as the repository source of truth.
+Ce qui reste manuel :
 
-## FPGA 1 Project
+- les affectations reelles de broches
+- les standards d'E/S
+- le choix final de la polarite de reset
+- le mapping VGA reel
+- l'integration future ADC/IP
 
-- Project directory: `fpga1_acquisition/quartus/`
-- Core top-level entity: `fpga1_top`
-- DE10-Lite wrapper top-level entity: `de10_lite_fpga1_wrapper`
-- Design role: acquisition and UART transmission
+Quartus n'a pas ete lance dans le cadre de cette mise a jour. Ces fichiers
+doivent donc etre utilises comme point d'entree de votre propre flow Quartus,
+pas comme preuve de compilation reussie.
 
-Source files, in compile order:
+## Projet FPGA1
 
-1. `fpga1_acquisition/src/pkg/fpga1_pkg.vhd`
-2. `fpga1_acquisition/src/processing/fake_sensor_gen.vhd`
-3. `fpga1_acquisition/src/processing/threshold_detector.vhd`
-4. `fpga1_acquisition/src/link_tx/frame_builder.vhd`
-5. `fpga1_acquisition/src/link_tx/uart_tx.vhd`
-6. `fpga1_acquisition/src/top/fpga1_top.vhd`
+- dossier : `fpga1_acquisition/quartus/`
+- top coeur : `fpga1_top`
+- top wrapper : `de10_lite_fpga1_wrapper`
 
-Helper script:
+L'ordre de compilation est gere par :
 
-- `fpga1_acquisition/quartus/add_sources.tcl`
-- `fpga1_acquisition/quartus/add_de10_lite_wrapper_sources.tcl`
+- `add_sources.tcl`
+- `add_de10_lite_wrapper_sources.tcl`
 
-Both scripts set the family, exact device, top-level entity, and `VHDL_2008`
-input mode before adding synthesis sources.
+Le jeu de sources FPGA1 inclut maintenant :
 
-Placeholder constraints:
+- le package partage `shared/rtl/dual_fpga_system_pkg.vhd`
+- la source capteur factice
+- les etages de normalisation / validation / classification
+- le constructeur de trame
+- l'emetteur UART
 
-- `fpga1_acquisition/quartus/de10_lite_placeholder.qsf`
+## Projet FPGA2
 
-Simulation-only files to keep out of the Quartus project:
+- dossier : `fpga2_display/quartus/`
+- top coeur : `fpga2_top`
+- top wrapper : `de10_lite_fpga2_wrapper`
 
-- `fpga1_acquisition/sim/uart_rx_monitor.vhd`
-- `fpga1_acquisition/sim/tb_fpga1_top.vhd`
+L'ordre de compilation est gere par :
 
-## FPGA 2 Project
+- `add_sources.tcl`
+- `add_de10_lite_wrapper_sources.tcl`
 
-- Project directory: `fpga2_display/quartus/`
-- Core top-level entity: `fpga2_top`
-- DE10-Lite wrapper top-level entity: `de10_lite_fpga2_wrapper`
-- Design role: UART reception and LED display
+Le jeu de sources FPGA2 inclut maintenant :
 
-Source files, in compile order:
+- le package partage `shared/rtl/dual_fpga_system_pkg.vhd`
+- le recepteur UART
+- le decodeur de trame
+- le bloc de statistiques de liaison
+- le mapping d'etat LED
+- le timing VGA et le generateur de tableau de bord
 
-1. `fpga2_display/src/pkg/fpga2_pkg.vhd`
-2. `fpga2_display/src/link_rx/uart_rx.vhd`
-3. `fpga2_display/src/link_rx/frame_decoder.vhd`
-4. `fpga2_display/src/control/status_mapper.vhd`
-5. `fpga2_display/src/display/led_driver.vhd`
-6. `fpga2_display/src/top/fpga2_top.vhd`
+## Sequence d'import recommandee
 
-Helper script:
+Pour chaque FPGA :
 
-- `fpga2_display/quartus/add_sources.tcl`
-- `fpga2_display/quartus/add_de10_lite_wrapper_sources.tcl`
+1. Creer ou ouvrir le projet Quartus dans le dossier `quartus/` correspondant.
+2. Confirmer le composant `10M50DAF484C7G`.
+3. Definir le wrapper comme top-level, pas le coeur.
+4. Executer `source add_de10_lite_wrapper_sources.tcl`.
+5. Fusionner le contenu du `.qsf` placeholder dans le `.qsf` actif.
+6. Renseigner les broches DE10-Lite reelles et les standards d'E/S.
+7. Regler les generiques wrappers si necessaire.
+8. Compiler.
 
-Both scripts set the family, exact device, top-level entity, and `VHDL_2008`
-input mode before adding synthesis sources.
+## Notes sur le mapping carte
 
-Placeholder constraints:
+Mapping manuel restant pour FPGA1 :
 
-- `fpga2_display/quartus/de10_lite_placeholder.qsf`
+- `clock_50_i`
+- `reset_source_i`
+- `uart_tx_o`
 
-Simulation-only files to keep out of the Quartus project:
+Mapping manuel restant pour FPGA2 :
 
-- `fpga2_display/sim/tb_fpga2_top.vhd`
+- `clock_50_i`
+- `reset_source_i`
+- `uart_rx_i`
+- `leds_o(3 downto 0)`
+- `vga_hsync_o`
+- `vga_vsync_o`
+- `vga_r_o(3 downto 0)`
+- `vga_g_o(3 downto 0)`
+- `vga_b_o(3 downto 0)`
 
-## Quartus Import Sequence
-
-For each FPGA:
-
-1. Create a new Quartus project in the matching `quartus/` directory.
-2. Select the DE10-Lite wrapper top-level entity listed above.
-3. Set the target device to `10M50DAF484C7G` if the project wizard has not already done so.
-4. Source the local `add_de10_lite_wrapper_sources.tcl` script from the Quartus Tcl console.
-5. Copy the local `de10_lite_placeholder.qsf` content into the project `.qsf`, or transfer the same placeholder assignments manually.
-6. Confirm the imported assignments still show `MAX 10`, `10M50DAF484C7G`, and `VHDL_2008`.
-7. Fill in the exact DE10-Lite pin locations and I/O standards in the `.qsf`.
-8. Map `clock_50_i` to the DE10-Lite 50 MHz clock input.
-9. Map `reset_source_i` to a chosen switch or push-button and set `G_RESET_ACTIVE_LEVEL` to match that source.
-10. Map `uart_tx_o` and `uart_rx_i` to the chosen board-to-board GPIO path.
-11. For FPGA 2, map `leds_o(3 downto 0)` to any four of the DE10-Lite user LEDs.
-12. Compile.
-
-## Cross-FPGA Connection
-
-- Connect FPGA 1 `uart_tx_o` to FPGA 2 `uart_rx_i`
-- Share a common ground between boards
-- Keep both FPGA projects on the same UART baud-rate setting
-- Do not add pin assignments until you decide the exact GPIO path between the two DE10-Lite boards
-
-## Current Scope Versus Board Resources
-
-- Current code uses only clock, reset, UART link, and four status LEDs.
-- The remaining DE10-Lite LEDs, switches, push-buttons, seven-segment displays, VGA, and Arduino analog header are available for later phases.
-- When the fake sensor is replaced, prefer the MAX 10 integrated ADC path on the DE10-Lite instead of assuming an external ADC device.
-
-## Reset Note
-
-- The board wrapper now converts a chosen board-facing reset source into the active-high synchronous reset expected by the core RTL.
-- The synchronizer samples reset on `clock_50_i`, so assertion and release are both synchronous to the board clock.
-- With the current wrapper configuration, reset stays active until the external source has been inactive for two clock cycles.
-- The wrapper does not debounce a push-button input.
-- For first hardware bring-up, a switch is the simpler reset source.
-
-## Simulation Compile Note
-
-- The end-to-end integration testbench is `sim/tb_fpga1_fpga2_integration.vhd`.
-- Compile it only after both FPGA 1 and FPGA 2 source sets and packages are already in the work library.
-- The wrapper-level bring-up testbench is `sim/tb_de10_lite_wrappers.vhd`.
-- Compile it after `board/de10_lite/common/reset_sync.vhd`, both source sets, and both DE10-Lite wrapper entities.
+Le travail ADC de phase 2 reste en dehors du perimetre actuel des placeholders
+Quartus.

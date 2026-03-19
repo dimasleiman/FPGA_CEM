@@ -23,8 +23,9 @@ begin
         if rising_edge(clk) then
             if rst = '1' then
                 leds_reg <= C_LED_NO_FRAME;
-            elsif load = '1' then
-                -- Register the LED pattern so the outputs change cleanly.
+            elsif (load = '1') or (led_in /= leds_reg) then
+                -- Track the latest mapped status cleanly even when the
+                -- underlying link statistics settle a cycle after frame decode.
                 leds_reg <= led_in;
             end if;
         end if;

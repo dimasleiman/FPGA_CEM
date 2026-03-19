@@ -8,6 +8,7 @@ entity de10_lite_fpga1_wrapper is
         G_BAUD_RATE             : positive  := 115_200;
         G_SENSOR_UPDATE_DIVIDER : positive  := 5_000_000;
         G_SENSOR_STEP           : positive  := 17;
+        G_SOURCE_IS_ADC         : std_logic := '0';
         G_RESET_ACTIVE_LEVEL    : std_logic := '0'
     );
     port (
@@ -39,7 +40,8 @@ begin
             G_CLOCK_FREQ_HZ         => G_CLOCK_FREQ_HZ,
             G_BAUD_RATE             => G_BAUD_RATE,
             G_SENSOR_UPDATE_DIVIDER => G_SENSOR_UPDATE_DIVIDER,
-            G_SENSOR_STEP           => G_SENSOR_STEP
+            G_SENSOR_STEP           => G_SENSOR_STEP,
+            G_SOURCE_IS_ADC         => G_SOURCE_IS_ADC
         )
         port map (
             clk       => clock_50_i,

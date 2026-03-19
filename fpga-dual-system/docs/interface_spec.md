@@ -1,63 +1,101 @@
-# Interface Specification
+# Specification d'Interface
 
-Target board for later Quartus import:
+Carte cible pour l'integration Quartus ulterieure :
 
-- Board: Terasic DE10-Lite
-- FPGA device: Intel/Altera MAX 10 `10M50DAF484C7G`
-- Default onboard clock: `50 MHz`
+- Carte : Terasic DE10-Lite
+- Composant FPGA : Intel/Altera MAX 10 `10M50DAF484C7G`
+- Horloge carte par defaut : `50 MHz`
 
-Board-specific pin locations are intentionally not specified here. All top-level ports are placeholders to be mapped in Quartus.
+Les noms exacts des broches et leurs affectations sont volontairement laisses
+ouverts dans ce document.
 
-## FPGA 1 Top Level
+## Top coeur FPGA1
 
-File: `fpga1_acquisition/src/top/fpga1_top.vhd`
+Fichier : `fpga1_acquisition/src/top/fpga1_top.vhd`
 
-### Generics
+### Generiques
 
-- `G_CLOCK_FREQ_HZ`: system clock frequency in hertz, default `50_000_000` for the DE10-Lite onboard clock
-- `G_BAUD_RATE`: UART baud rate
-- `G_SENSOR_UPDATE_DIVIDER`: number of clock cycles between fake sensor updates
-- `G_SENSOR_STEP`: increment applied to the fake 12-bit sample each update
-
-### Ports
-
-- `clk`: system clock input, to be mapped in Quartus
-- `rst`: active-high synchronous reset input, to be mapped in Quartus
-- `uart_tx_o`: UART transmit output to FPGA 2, to be mapped in Quartus
-
-## FPGA 2 Top Level
-
-File: `fpga2_display/src/top/fpga2_top.vhd`
-
-### Generics
-
-- `G_CLOCK_FREQ_HZ`: system clock frequency in hertz, default `50_000_000` for the DE10-Lite onboard clock
-- `G_BAUD_RATE`: UART baud rate
+- `G_CLOCK_FREQ_HZ`
+- `G_BAUD_RATE`
+- `G_SENSOR_UPDATE_DIVIDER`
+- `G_SENSOR_STEP`
+- `G_SOURCE_IS_ADC`
 
 ### Ports
 
-- `clk`: system clock input, to be mapped in Quartus
-- `rst`: active-high synchronous reset input, to be mapped in Quartus
-- `uart_rx_i`: UART receive input from FPGA 1, to be mapped in Quartus
-- `leds_o(3 downto 0)`: four LED status outputs, to be mapped in Quartus to any four of the DE10-Lite user LEDs
+- `clk`
+- `rst`
+- `uart_tx_o`
 
-## Shared UART Link
+Remarques :
 
-- UART format: 8 data bits, no parity, 1 stop bit
-- Idle level: logic `'1'`
-- Frame length: 5 bytes
-- Header byte: `x"AA"`
-- Footer byte: `x"55"`
+- la phase 1 conserve le capteur factice a l'interieur du top coeur
+- `G_SOURCE_IS_ADC` ne sert actuellement qu'a renseigner les drapeaux transmis
+- l'integration ADC reelle MAX 10 n'est pas encore cablee dans ce top du depot
 
-## LED Meanings
+## Top coeur FPGA2
 
-- `0001`: normal
-- `0010`: warning
-- `0100`: error
-- `1000`: no valid frame yet / default state
+Fichier : `fpga2_display/src/top/fpga2_top.vhd`
 
-## DE10-Lite Notes
+### Generiques
 
-- This starter design does not yet use the DE10-Lite switches, push-buttons, seven-segment displays, VGA, or Arduino header directly.
-- No external ADC chip is assumed.
-- A later FPGA 1 upgrade can replace `fake_sensor_gen.vhd` with a MAX 10 integrated ADC acquisition block while preserving the same frame format.
+- `G_CLOCK_FREQ_HZ`
+- `G_BAUD_RATE`
+- `G_FRAME_TIMEOUT_CLKS`
+- `G_FAST_SIMULATION_VGA`
+
+### Ports
+
+- `clk`
+- `rst`
+- `uart_rx_i`
+- `leds_o(3 downto 0)`
+- `vga_hsync_o`
+- `vga_vsync_o`
+- `vga_r_o(3 downto 0)`
+- `vga_g_o(3 downto 0)`
+- `vga_b_o(3 downto 0)`
+
+Remarques :
+
+- les signaux VGA sont des sorties video logiques, pas des noms de broches
+  fixes de la carte
+- le mode VGA accelere ne sert qu'a la simulation
+
+## Tops wrappers DE10-Lite
+
+Fichiers :
+
+- `board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd`
+- `board/de10_lite/fpga2/de10_lite_fpga2_wrapper.vhd`
+
+Role des wrappers :
+
+- adapter le reset carte vers le reset synchrone actif a l'etat haut du coeur
+- garder le mapping de broches Quartus hors du coeur reutilisable
+- n'exposer que des ports placeholders cote carte
+
+## Liaison UART
+
+- 8 bits de donnees
+- pas de parite
+- 1 bit de stop
+- ligne au repos a l'etat haut
+- trame fixe de 8 octets
+
+Voir `shared/protocol/frame_format.md` pour le format exact de la trame.
+
+## Perimetre actuel de verification
+
+Verifie en simulation :
+
+- generation de trame sur FPGA1
+- chemin reception / verification / statistiques / VGA sur FPGA2
+- testbenches bout-en-bout du coeur et des wrappers
+
+Non verifie ici :
+
+- mapping reel des broches DE10-Lite
+- affichage VGA reel sur moniteur
+- integration ADC reelle du MAX 10
+- compilation Quartus

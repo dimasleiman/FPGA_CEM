@@ -3,6 +3,7 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
 library work;
+use work.dual_fpga_system_pkg.all;
 use work.fpga2_pkg.all;
 
 entity tb_de10_lite_wrappers is
@@ -12,14 +13,20 @@ architecture sim of tb_de10_lite_wrappers is
     constant C_CLOCK_PERIOD          : time     := 1 us;
     constant C_CLOCK_FREQ_HZ         : positive := 1_000_000;
     constant C_BAUD_RATE             : positive := 10_000;
-    constant C_SENSOR_UPDATE_DIVIDER : positive := 6_000;
+    constant C_SENSOR_UPDATE_DIVIDER : positive := 12_000;
     constant C_SENSOR_STEP           : positive := 900;
+    constant C_FRAME_TIMEOUT_CLKS    : positive := 40_000;
 
     signal clock_50_i        : std_logic := '0';
     signal fpga1_reset_src_i : std_logic := '0';
     signal fpga2_reset_src_i : std_logic := '0';
     signal uart_link         : std_logic := '1';
     signal leds_o            : std_logic_vector(3 downto 0);
+    signal vga_hsync_o       : std_logic;
+    signal vga_vsync_o       : std_logic;
+    signal vga_r_o           : std_logic_vector(3 downto 0);
+    signal vga_g_o           : std_logic_vector(3 downto 0);
+    signal vga_b_o           : std_logic_vector(3 downto 0);
     signal tb_done           : std_logic := '0';
 
     procedure wait_for_led_pattern (
@@ -61,15 +68,22 @@ begin
 
     u_fpga2_wrapper : entity work.de10_lite_fpga2_wrapper
         generic map (
-            G_CLOCK_FREQ_HZ      => C_CLOCK_FREQ_HZ,
-            G_BAUD_RATE          => C_BAUD_RATE,
-            G_RESET_ACTIVE_LEVEL => '0'
+            G_CLOCK_FREQ_HZ       => C_CLOCK_FREQ_HZ,
+            G_BAUD_RATE           => C_BAUD_RATE,
+            G_FRAME_TIMEOUT_CLKS  => C_FRAME_TIMEOUT_CLKS,
+            G_FAST_SIMULATION_VGA => true,
+            G_RESET_ACTIVE_LEVEL  => '0'
         )
         port map (
             clock_50_i     => clock_50_i,
             reset_source_i => fpga2_reset_src_i,
             uart_rx_i      => uart_link,
-            leds_o         => leds_o
+            leds_o         => leds_o,
+            vga_hsync_o    => vga_hsync_o,
+            vga_vsync_o    => vga_vsync_o,
+            vga_r_o        => vga_r_o,
+            vga_g_o        => vga_g_o,
+            vga_b_o        => vga_b_o
         );
 
     stimulus : process
@@ -90,7 +104,7 @@ begin
             clk_i  => clock_50_i,
             leds_i => leds_o,
             value  => C_LED_NORMAL,
-            cycles => 15_000,
+            cycles => 30_000,
             msg    => "DE10-Lite wrapper flow did not produce the normal LED pattern after reset release."
         );
 
@@ -98,7 +112,7 @@ begin
             clk_i  => clock_50_i,
             leds_i => leds_o,
             value  => C_LED_WARNING,
-            cycles => 15_000,
+            cycles => 30_000,
             msg    => "DE10-Lite wrapper flow did not produce the warning LED pattern on a later frame."
         );
 
@@ -106,7 +120,7 @@ begin
             clk_i  => clock_50_i,
             leds_i => leds_o,
             value  => C_LED_ERROR,
-            cycles => 15_000,
+            cycles => 30_000,
             msg    => "DE10-Lite wrapper flow did not produce the error LED pattern on a later frame."
         );
 
@@ -127,7 +141,7 @@ begin
             clk_i  => clock_50_i,
             leds_i => leds_o,
             value  => C_LED_NORMAL,
-            cycles => 15_000,
+            cycles => 30_000,
             msg    => "DE10-Lite wrapper flow did not recover to the normal LED pattern after a second reset release."
         );
 
@@ -138,7 +152,7 @@ begin
 
     timeout_guard : process
     begin
-        wait for 100 ms;
+        wait for 180 ms;
         assert tb_done = '1'
             report "Timeout waiting for DE10-Lite wrapper behavior."
             severity failure;

@@ -1,0 +1,30 @@
+set_global_assignment -name FAMILY "MAX 10"
+set_global_assignment -name DEVICE 10M50DAF484C7G
+set_global_assignment -name VHDL_INPUT_VERSION VHDL_2008
+set_global_assignment -name TOP_LEVEL_ENTITY de10_lite_fpga2_wrapper
+set_global_assignment -name PROJECT_OUTPUT_DIRECTORY output_files
+set_global_assignment -name SDC_FILE de10_lite_fpga2_wrapper.sdc
+
+set_global_assignment -name VHDL_FILE ../../shared/rtl/dual_fpga_system_pkg.vhd
+set_global_assignment -name VHDL_FILE ../../board/de10_lite/common/reset_sync.vhd
+set_global_assignment -name VHDL_FILE ../../fpga2_display/src/pkg/fpga2_pkg.vhd
+set_global_assignment -name VHDL_FILE ../../fpga2_display/src/link_rx/uart_rx.vhd
+set_global_assignment -name VHDL_FILE ../../fpga2_display/src/link_rx/frame_decoder.vhd
+set_global_assignment -name VHDL_FILE ../../fpga2_display/src/control/link_statistics.vhd
+set_global_assignment -name VHDL_FILE ../../fpga2_display/src/control/status_mapper.vhd
+set_global_assignment -name VHDL_FILE ../../fpga2_display/src/display/led_driver.vhd
+set_global_assignment -name VHDL_FILE ../../fpga2_display/src/display/vga_timing.vhd
+set_global_assignment -name VHDL_FILE ../../fpga2_display/src/display/vga_dashboard.vhd
+set_global_assignment -name VHDL_FILE ../../fpga2_display/src/top/fpga2_top.vhd
+set_global_assignment -name VHDL_FILE ../../board/de10_lite/fpga2/de10_lite_fpga2_wrapper.vhd
+
+# This project file intentionally does not lock in any DE10-Lite pin mapping.
+# Add real pin locations and I/O standards manually in Quartus, or merge the
+# placeholder guidance from de10_lite_placeholder.qsf once your board mapping
+# choices are known.
+
+set_global_assignment -name LAST_QUARTUS_VERSION "25.1std.0 Standard Edition"
+set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top
+set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -section_id Top
+set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top
+set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top

@@ -3,26 +3,29 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
 library work;
+use work.dual_fpga_system_pkg.all;
 use work.fpga2_pkg.all;
 
 entity status_mapper is
     port (
-        frame_valid  : in  std_logic;
-        warning_flag : in  std_logic;
-        error_flag   : in  std_logic;
+        sensor_state : in  t_sensor_state;
+        comm_state   : in  t_comm_state;
         led_pattern  : out std_logic_vector(3 downto 0)
     );
 end entity status_mapper;
 
 architecture rtl of status_mapper is
 begin
-    process (frame_valid, warning_flag, error_flag)
+    process (sensor_state, comm_state)
     begin
-        if frame_valid = '0' then
+        if (comm_state = C_COMM_STATE_NO_FRAME)
+           or (comm_state = C_COMM_STATE_TIMEOUT) then
             led_pattern <= C_LED_NO_FRAME;
-        elsif error_flag = '1' then
+        elsif comm_state = C_COMM_STATE_DEGRADED then
+            led_pattern <= C_LED_LINK_WARN;
+        elsif sensor_state = C_SENSOR_STATE_ERROR then
             led_pattern <= C_LED_ERROR;
-        elsif warning_flag = '1' then
+        elsif sensor_state = C_SENSOR_STATE_WARNING then
             led_pattern <= C_LED_WARNING;
         else
             led_pattern <= C_LED_NORMAL;

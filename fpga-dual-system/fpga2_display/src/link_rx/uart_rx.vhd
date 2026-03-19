@@ -3,7 +3,7 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
 library work;
-use work.fpga2_pkg.all;
+use work.dual_fpga_system_pkg.all;
 
 entity uart_rx is
     generic (

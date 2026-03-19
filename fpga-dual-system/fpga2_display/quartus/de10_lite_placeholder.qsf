@@ -2,36 +2,70 @@ set_global_assignment -name FAMILY "MAX 10"
 set_global_assignment -name DEVICE 10M50DAF484C7G
 set_global_assignment -name VHDL_INPUT_VERSION VHDL_2008
 set_global_assignment -name TOP_LEVEL_ENTITY de10_lite_fpga2_wrapper
+set_global_assignment -name SDC_FILE de10_lite_fpga2_wrapper.sdc
 
-# Add sources by running:
-#   source add_de10_lite_wrapper_sources.tcl
+# Placeholder only.
+# Replace the commented templates below with the actual DE10-Lite pin locations
+# and I/O standards you choose in Quartus.
+#
+# Current repository scope for FPGA2:
+# - onboard 50 MHz clock
+# - external reset source
+# - board-to-board UART receive
+# - LED status summary
+# - VGA dashboard output
 
-# Fill in the board-specific assignments below in Quartus after you choose the
-# exact DE10-Lite resources and the board-to-board UART path.
-# Suggested first bring-up:
-#   clock_50_i     -> DE10-Lite CLOCK_50
-#   reset_source_i -> one chosen slide switch
-#   uart_rx_i      -> one chosen GPIO/header input pin
-#   leds_o[3:0]    -> four chosen user LEDs
-
-# Clock input
+# clock_50_i
 # set_location_assignment <CLOCK_50_PIN> -to clock_50_i
-# set_instance_assignment -name IO_STANDARD "<FILL_ME>" -to clock_50_i
+# set_instance_assignment -name IO_STANDARD "<CLOCK_IO_STANDARD>" -to clock_50_i
 
-# Reset source
+# reset_source_i
 # set_location_assignment <RESET_SOURCE_PIN> -to reset_source_i
-# set_instance_assignment -name IO_STANDARD "<FILL_ME>" -to reset_source_i
+# set_instance_assignment -name IO_STANDARD "<RESET_IO_STANDARD>" -to reset_source_i
 
-# UART receive input
+# uart_rx_i
 # set_location_assignment <UART_RX_PIN> -to uart_rx_i
-# set_instance_assignment -name IO_STANDARD "<FILL_ME>" -to uart_rx_i
+# set_instance_assignment -name IO_STANDARD "<UART_RX_IO_STANDARD>" -to uart_rx_i
 
-# LED outputs
+# leds_o(3 downto 0)
 # set_location_assignment <LED0_PIN> -to leds_o[0]
 # set_location_assignment <LED1_PIN> -to leds_o[1]
 # set_location_assignment <LED2_PIN> -to leds_o[2]
 # set_location_assignment <LED3_PIN> -to leds_o[3]
-# set_instance_assignment -name IO_STANDARD "<FILL_ME>" -to leds_o[0]
-# set_instance_assignment -name IO_STANDARD "<FILL_ME>" -to leds_o[1]
-# set_instance_assignment -name IO_STANDARD "<FILL_ME>" -to leds_o[2]
-# set_instance_assignment -name IO_STANDARD "<FILL_ME>" -to leds_o[3]
+# set_instance_assignment -name IO_STANDARD "<LED_IO_STANDARD>" -to leds_o[0]
+# set_instance_assignment -name IO_STANDARD "<LED_IO_STANDARD>" -to leds_o[1]
+# set_instance_assignment -name IO_STANDARD "<LED_IO_STANDARD>" -to leds_o[2]
+# set_instance_assignment -name IO_STANDARD "<LED_IO_STANDARD>" -to leds_o[3]
+
+# VGA output
+# set_location_assignment <VGA_HSYNC_PIN> -to vga_hsync_o
+# set_location_assignment <VGA_VSYNC_PIN> -to vga_vsync_o
+# set_location_assignment <VGA_R0_PIN> -to vga_r_o[0]
+# set_location_assignment <VGA_R1_PIN> -to vga_r_o[1]
+# set_location_assignment <VGA_R2_PIN> -to vga_r_o[2]
+# set_location_assignment <VGA_R3_PIN> -to vga_r_o[3]
+# set_location_assignment <VGA_G0_PIN> -to vga_g_o[0]
+# set_location_assignment <VGA_G1_PIN> -to vga_g_o[1]
+# set_location_assignment <VGA_G2_PIN> -to vga_g_o[2]
+# set_location_assignment <VGA_G3_PIN> -to vga_g_o[3]
+# set_location_assignment <VGA_B0_PIN> -to vga_b_o[0]
+# set_location_assignment <VGA_B1_PIN> -to vga_b_o[1]
+# set_location_assignment <VGA_B2_PIN> -to vga_b_o[2]
+# set_location_assignment <VGA_B3_PIN> -to vga_b_o[3]
+# set_instance_assignment -name IO_STANDARD "<VGA_IO_STANDARD>" -to vga_hsync_o
+# set_instance_assignment -name IO_STANDARD "<VGA_IO_STANDARD>" -to vga_vsync_o
+# set_instance_assignment -name IO_STANDARD "<VGA_IO_STANDARD>" -to vga_r_o[0]
+# set_instance_assignment -name IO_STANDARD "<VGA_IO_STANDARD>" -to vga_r_o[1]
+# set_instance_assignment -name IO_STANDARD "<VGA_IO_STANDARD>" -to vga_r_o[2]
+# set_instance_assignment -name IO_STANDARD "<VGA_IO_STANDARD>" -to vga_r_o[3]
+# set_instance_assignment -name IO_STANDARD "<VGA_IO_STANDARD>" -to vga_g_o[0]
+# set_instance_assignment -name IO_STANDARD "<VGA_IO_STANDARD>" -to vga_g_o[1]
+# set_instance_assignment -name IO_STANDARD "<VGA_IO_STANDARD>" -to vga_g_o[2]
+# set_instance_assignment -name IO_STANDARD "<VGA_IO_STANDARD>" -to vga_g_o[3]
+# set_instance_assignment -name IO_STANDARD "<VGA_IO_STANDARD>" -to vga_b_o[0]
+# set_instance_assignment -name IO_STANDARD "<VGA_IO_STANDARD>" -to vga_b_o[1]
+# set_instance_assignment -name IO_STANDARD "<VGA_IO_STANDARD>" -to vga_b_o[2]
+# set_instance_assignment -name IO_STANDARD "<VGA_IO_STANDARD>" -to vga_b_o[3]
+
+# Optional wrapper generic override:
+# - Set G_RESET_ACTIVE_LEVEL after you choose the real board reset polarity.

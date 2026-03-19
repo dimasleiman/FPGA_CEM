@@ -3,6 +3,7 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
 library work;
+use work.dual_fpga_system_pkg.all;
 use work.fpga1_pkg.all;
 
 entity fpga1_top is
@@ -10,7 +11,8 @@ entity fpga1_top is
         G_CLOCK_FREQ_HZ         : positive := 50_000_000;
         G_BAUD_RATE             : positive := 115_200;
         G_SENSOR_UPDATE_DIVIDER : positive := 5_000_000;
-        G_SENSOR_STEP           : positive := 17
+        G_SENSOR_STEP           : positive := 17;
+        G_SOURCE_IS_ADC         : std_logic := C_FAKE_SENSOR_SOURCE_IS_ADC
     );
     port (
         clk       : in  std_logic;
@@ -29,14 +31,17 @@ architecture rtl of fpga1_top is
         ST_WAIT_UART_DONE
     );
 
-    signal sensor_sample    : t_sample := (others => '0');
-    signal sensor_valid     : std_logic := '0';
-    signal warning_flag     : std_logic := '0';
-    signal error_flag       : std_logic := '0';
+    signal raw_sample             : t_sample := (others => '0');
+    signal raw_sample_valid       : std_logic := '0';
+    signal normalized_sample      : t_sample := (others => '0');
+    signal normalized_sample_valid : std_logic := '0';
+    signal sample_range_ok        : std_logic := '0';
+    signal sample_range_error     : std_logic := '1';
+    signal sensor_state           : t_sensor_state := C_SENSOR_STATE_INVALID;
 
-    signal latched_sample   : t_sample := (others => '0');
-    signal latched_warning  : std_logic := '0';
-    signal latched_error    : std_logic := '0';
+    signal latched_sample         : t_sample := (others => '0');
+    signal latched_range_ok       : std_logic := '0';
+    signal latched_sensor_state   : t_sensor_state := C_SENSOR_STATE_INVALID;
 
     signal frame_load       : std_logic := '0';
     signal frame_ready      : std_logic := '0';
@@ -57,29 +62,46 @@ begin
         port map (
             clk          => clk,
             rst          => rst,
-            sample_value => sensor_sample,
-            sample_valid => sensor_valid
+            sample_value => raw_sample,
+            sample_valid => raw_sample_valid
         );
 
-    u_threshold_detector : entity work.threshold_detector
+    u_sample_normalizer : entity work.sample_normalizer
         port map (
-            sample_value => sensor_sample,
-            sample_valid => sensor_valid,
-            warning_flag => warning_flag,
-            error_flag   => error_flag
+            sample_in      => raw_sample,
+            sample_valid_i => raw_sample_valid,
+            sample_out     => normalized_sample,
+            sample_valid_o => normalized_sample_valid
+        );
+
+    u_sample_validator : entity work.sample_validator
+        port map (
+            sample_value => normalized_sample,
+            sample_valid => normalized_sample_valid,
+            range_ok     => sample_range_ok,
+            range_error  => sample_range_error
+        );
+
+    u_sample_classifier : entity work.sample_classifier
+        port map (
+            sample_value => normalized_sample,
+            sample_valid => normalized_sample_valid,
+            range_ok     => sample_range_ok,
+            sensor_state => sensor_state
         );
 
     u_frame_builder : entity work.frame_builder
         port map (
-            clk          => clk,
-            rst          => rst,
-            load_frame   => frame_load,
-            sample_value => latched_sample,
-            warning_flag => latched_warning,
-            error_flag   => latched_error,
-            byte_index   => frame_byte_index,
-            byte_out     => frame_byte,
-            frame_ready  => frame_ready
+            clk           => clk,
+            rst           => rst,
+            load_frame    => frame_load,
+            sample_value  => latched_sample,
+            sensor_state  => latched_sensor_state,
+            range_ok      => latched_range_ok,
+            source_is_adc => G_SOURCE_IS_ADC,
+            byte_index    => frame_byte_index,
+            byte_out      => frame_byte,
+            frame_ready   => frame_ready
         );
 
     u_uart_tx : entity work.uart_tx
@@ -100,14 +122,14 @@ begin
     begin
         if rising_edge(clk) then
             if rst = '1' then
-                latched_sample   <= (others => '0');
-                latched_warning  <= '0';
-                latched_error    <= '0';
-                frame_load       <= '0';
-                frame_byte_index <= (others => '0');
-                uart_data        <= (others => '0');
-                uart_start       <= '0';
-                tx_state         <= ST_IDLE;
+                latched_sample       <= (others => '0');
+                latched_range_ok     <= '0';
+                latched_sensor_state <= C_SENSOR_STATE_INVALID;
+                frame_load           <= '0';
+                frame_byte_index     <= (others => '0');
+                uart_data            <= (others => '0');
+                uart_start           <= '0';
+                tx_state             <= ST_IDLE;
             else
                 frame_load <= '0';
                 uart_start <= '0';
@@ -116,13 +138,13 @@ begin
                     when ST_IDLE =>
                         frame_byte_index <= (others => '0');
 
-                        if sensor_valid = '1' then
+                        if normalized_sample_valid = '1' then
                             -- Capture one complete sample and its status before
                             -- building the outgoing UART frame.
-                            latched_sample  <= sensor_sample;
-                            latched_warning <= warning_flag;
-                            latched_error   <= error_flag;
-                            tx_state        <= ST_LOAD_FRAME;
+                            latched_sample       <= normalized_sample;
+                            latched_range_ok     <= sample_range_ok and (not sample_range_error);
+                            latched_sensor_state <= sensor_state;
+                            tx_state             <= ST_LOAD_FRAME;
                         end if;
 
                     when ST_LOAD_FRAME =>

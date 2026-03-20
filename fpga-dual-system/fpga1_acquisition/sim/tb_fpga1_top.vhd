@@ -19,7 +19,10 @@ architecture sim of tb_fpga1_top is
 
     signal clk            : std_logic := '0';
     signal rst            : std_logic := '1';
-    signal uart_tx_line   : std_logic;
+    signal uart_tx_line_ok : std_logic;
+    signal uart_tx_line_err : std_logic;
+    signal local_error_led_ok : std_logic;
+    signal local_error_led_err : std_logic;
     signal monitor_byte   : std_logic_vector(7 downto 0);
     signal monitor_valid  : std_logic;
     signal captured_bytes : t_byte_array := (others => (others => '0'));
@@ -28,7 +31,7 @@ architecture sim of tb_fpga1_top is
 begin
     clk <= not clk after C_CLOCK_PERIOD / 2;
 
-    u_dut : entity work.fpga1_top
+    u_dut_ok : entity work.fpga1_top
         generic map (
             G_CLOCK_FREQ_HZ         => C_CLOCK_FREQ_HZ,
             G_BAUD_RATE             => C_BAUD_RATE,
@@ -36,9 +39,24 @@ begin
             G_SENSOR_STEP           => C_SENSOR_STEP
         )
         port map (
-            clk       => clk,
-            rst       => rst,
-            uart_tx_o => uart_tx_line
+            clk               => clk,
+            rst               => rst,
+            local_error_led_o => local_error_led_ok,
+            uart_tx_o         => uart_tx_line_ok
+        );
+
+    u_dut_err : entity work.fpga1_top
+        generic map (
+            G_CLOCK_FREQ_HZ         => C_CLOCK_FREQ_HZ,
+            G_BAUD_RATE             => C_BAUD_RATE,
+            G_SENSOR_UPDATE_DIVIDER => C_SENSOR_UPDATE_DIVIDER,
+            G_SENSOR_STEP           => 2500
+        )
+        port map (
+            clk               => clk,
+            rst               => rst,
+            local_error_led_o => local_error_led_err,
+            uart_tx_o         => uart_tx_line_err
         );
 
     u_monitor_uart_rx : entity work.uart_rx_monitor
@@ -49,7 +67,7 @@ begin
         port map (
             clk        => clk,
             rst        => rst,
-            rx         => uart_tx_line,
+            rx         => uart_tx_line_ok,
             data_out   => monitor_byte,
             data_valid => monitor_valid
         );
@@ -84,6 +102,15 @@ begin
         variable expected_range_ok : std_logic;
     begin
         wait until rst = '0';
+        wait for 50 * C_CLOCK_PERIOD;
+
+        assert local_error_led_ok = '0'
+            report "FPGA1 local LED should stay off when the local verification path classifies the sample without an error."
+            severity failure;
+        assert local_error_led_err = '1'
+            report "FPGA1 local LED should turn on when the existing local sample classification reports an error."
+            severity failure;
+
         wait until captured_count = C_FRAME_BYTE_COUNT;
         wait for 10 * C_CLOCK_PERIOD;
 

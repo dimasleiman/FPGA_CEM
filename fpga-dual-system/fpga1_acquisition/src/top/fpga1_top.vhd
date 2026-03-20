@@ -15,9 +15,10 @@ entity fpga1_top is
         G_SOURCE_IS_ADC         : std_logic := C_FAKE_SENSOR_SOURCE_IS_ADC
     );
     port (
-        clk       : in  std_logic;
-        rst       : in  std_logic;
-        uart_tx_o : out std_logic
+        clk               : in  std_logic;
+        rst               : in  std_logic;
+        local_error_led_o : out std_logic;
+        uart_tx_o         : out std_logic
     );
 end entity fpga1_top;
 
@@ -184,4 +185,6 @@ begin
             end if;
         end if;
     end process;
+
+    local_error_led_o <= '1' when latched_sensor_state = C_SENSOR_STATE_ERROR else '0';
 end architecture rtl;

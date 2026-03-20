@@ -1,5 +1,5 @@
 Analysis & Synthesis report for de10_lite_fpga1_wrapper
-Thu Mar 19 15:15:27 2026
+Fri Mar 20 12:36:14 2026
 Quartus Prime Version 25.1std.0 Build 1129 10/21/2025 SC Standard Edition
 
 
@@ -24,9 +24,10 @@ Quartus Prime Version 25.1std.0 Build 1129 10/21/2025 SC Standard Edition
  16. Parameter Settings for User Entity Instance: fpga1_top:u_core
  17. Parameter Settings for User Entity Instance: fpga1_top:u_core|fake_sensor_gen:u_fake_sensor_gen
  18. Parameter Settings for User Entity Instance: fpga1_top:u_core|uart_tx:u_uart_tx
- 19. Post-Synthesis Netlist Statistics for Top Partition
- 20. Elapsed Time Per Partition
- 21. Analysis & Synthesis Messages
+ 19. Port Connectivity Checks: "fpga1_top:u_core|frame_builder:u_frame_builder"
+ 20. Post-Synthesis Netlist Statistics for Top Partition
+ 21. Elapsed Time Per Partition
+ 22. Analysis & Synthesis Messages
 
 
 
@@ -53,16 +54,16 @@ on the Quartus Prime software download page.
 +------------------------------------------------------------------------------------------+
 ; Analysis & Synthesis Summary                                                             ;
 +------------------------------------+-----------------------------------------------------+
-; Analysis & Synthesis Status        ; Successful - Thu Mar 19 15:15:27 2026               ;
+; Analysis & Synthesis Status        ; Successful - Fri Mar 20 12:36:14 2026               ;
 ; Quartus Prime Version              ; 25.1std.0 Build 1129 10/21/2025 SC Standard Edition ;
 ; Revision Name                      ; de10_lite_fpga1_wrapper                             ;
 ; Top-level Entity Name              ; de10_lite_fpga1_wrapper                             ;
 ; Family                             ; MAX 10                                              ;
-; Total logic elements               ; 192                                                 ;
-;     Total combinational functions  ; 191                                                 ;
-;     Dedicated logic registers      ; 113                                                 ;
-; Total registers                    ; 113                                                 ;
-; Total pins                         ; 3                                                   ;
+; Total logic elements               ; 300                                                 ;
+;     Total combinational functions  ; 298                                                 ;
+;     Dedicated logic registers      ; 140                                                 ;
+; Total registers                    ; 140                                                 ;
+; Total pins                         ; 4                                                   ;
 ; Total virtual pins                 ; 0                                                   ;
 ; Total memory bits                  ; 0                                                   ;
 ; Embedded Multiplier 9-bit elements ; 0                                                   ;
@@ -175,20 +176,23 @@ on the Quartus Prime software download page.
 +----------------------------+-------------+
 
 
-+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-; Analysis & Synthesis Source Files Read                                                                                                                                                               ;
-+---------------------------------------------------------+-----------------+-----------------+----------------------------------------------------------------------------------------------+---------+
-; File Name with User-Entered Path                        ; Used in Netlist ; File Type       ; File Name with Absolute Path                                                                 ; Library ;
-+---------------------------------------------------------+-----------------+-----------------+----------------------------------------------------------------------------------------------+---------+
-; ../../board/de10_lite/common/reset_sync.vhd             ; yes             ; User VHDL File  ; F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/common/reset_sync.vhd                   ;         ;
-; ../src/pkg/fpga1_pkg.vhd                                ; yes             ; User VHDL File  ; F:/Sources/FPGA_CEM/fpga-dual-system/fpga1_acquisition/src/pkg/fpga1_pkg.vhd                 ;         ;
-; ../src/processing/fake_sensor_gen.vhd                   ; yes             ; User VHDL File  ; F:/Sources/FPGA_CEM/fpga-dual-system/fpga1_acquisition/src/processing/fake_sensor_gen.vhd    ;         ;
-; ../src/processing/threshold_detector.vhd                ; yes             ; User VHDL File  ; F:/Sources/FPGA_CEM/fpga-dual-system/fpga1_acquisition/src/processing/threshold_detector.vhd ;         ;
-; ../src/link_tx/frame_builder.vhd                        ; yes             ; User VHDL File  ; F:/Sources/FPGA_CEM/fpga-dual-system/fpga1_acquisition/src/link_tx/frame_builder.vhd         ;         ;
-; ../src/link_tx/uart_tx.vhd                              ; yes             ; User VHDL File  ; F:/Sources/FPGA_CEM/fpga-dual-system/fpga1_acquisition/src/link_tx/uart_tx.vhd               ;         ;
-; ../src/top/fpga1_top.vhd                                ; yes             ; User VHDL File  ; F:/Sources/FPGA_CEM/fpga-dual-system/fpga1_acquisition/src/top/fpga1_top.vhd                 ;         ;
-; ../../board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd ; yes             ; User VHDL File  ; F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd       ;         ;
-+---------------------------------------------------------+-----------------+-----------------+----------------------------------------------------------------------------------------------+---------+
++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Analysis & Synthesis Source Files Read                                                                                                                                                              ;
++---------------------------------------------------------+-----------------+-----------------+---------------------------------------------------------------------------------------------+---------+
+; File Name with User-Entered Path                        ; Used in Netlist ; File Type       ; File Name with Absolute Path                                                                ; Library ;
++---------------------------------------------------------+-----------------+-----------------+---------------------------------------------------------------------------------------------+---------+
+; ../../shared/rtl/dual_fpga_system_pkg.vhd               ; yes             ; User VHDL File  ; F:/Sources/FPGA_CEM/fpga-dual-system/shared/rtl/dual_fpga_system_pkg.vhd                    ;         ;
+; ../../board/de10_lite/common/reset_sync.vhd             ; yes             ; User VHDL File  ; F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/common/reset_sync.vhd                  ;         ;
+; ../src/pkg/fpga1_pkg.vhd                                ; yes             ; User VHDL File  ; F:/Sources/FPGA_CEM/fpga-dual-system/fpga1_acquisition/src/pkg/fpga1_pkg.vhd                ;         ;
+; ../src/processing/fake_sensor_gen.vhd                   ; yes             ; User VHDL File  ; F:/Sources/FPGA_CEM/fpga-dual-system/fpga1_acquisition/src/processing/fake_sensor_gen.vhd   ;         ;
+; ../src/processing/sample_normalizer.vhd                 ; yes             ; User VHDL File  ; F:/Sources/FPGA_CEM/fpga-dual-system/fpga1_acquisition/src/processing/sample_normalizer.vhd ;         ;
+; ../src/processing/sample_validator.vhd                  ; yes             ; User VHDL File  ; F:/Sources/FPGA_CEM/fpga-dual-system/fpga1_acquisition/src/processing/sample_validator.vhd  ;         ;
+; ../src/processing/sample_classifier.vhd                 ; yes             ; User VHDL File  ; F:/Sources/FPGA_CEM/fpga-dual-system/fpga1_acquisition/src/processing/sample_classifier.vhd ;         ;
+; ../src/link_tx/frame_builder.vhd                        ; yes             ; User VHDL File  ; F:/Sources/FPGA_CEM/fpga-dual-system/fpga1_acquisition/src/link_tx/frame_builder.vhd        ;         ;
+; ../src/link_tx/uart_tx.vhd                              ; yes             ; User VHDL File  ; F:/Sources/FPGA_CEM/fpga-dual-system/fpga1_acquisition/src/link_tx/uart_tx.vhd              ;         ;
+; ../src/top/fpga1_top.vhd                                ; yes             ; User VHDL File  ; F:/Sources/FPGA_CEM/fpga-dual-system/fpga1_acquisition/src/top/fpga1_top.vhd                ;         ;
+; ../../board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd ; yes             ; User VHDL File  ; F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd      ;         ;
++---------------------------------------------------------+-----------------+-----------------+---------------------------------------------------------------------------------------------+---------+
 
 
 +----------------------------------------------------------------+
@@ -196,46 +200,47 @@ on the Quartus Prime software download page.
 +---------------------------------------------+------------------+
 ; Resource                                    ; Usage            ;
 +---------------------------------------------+------------------+
-; Estimated Total logic elements              ; 192              ;
+; Estimated Total logic elements              ; 300              ;
 ;                                             ;                  ;
-; Total combinational functions               ; 191              ;
+; Total combinational functions               ; 298              ;
 ; Logic element usage by number of LUT inputs ;                  ;
-;     -- 4 input functions                    ; 68               ;
-;     -- 3 input functions                    ; 25               ;
-;     -- <=2 input functions                  ; 98               ;
+;     -- 4 input functions                    ; 113              ;
+;     -- 3 input functions                    ; 53               ;
+;     -- <=2 input functions                  ; 132              ;
 ;                                             ;                  ;
 ; Logic elements by mode                      ;                  ;
-;     -- normal mode                          ; 150              ;
-;     -- arithmetic mode                      ; 41               ;
+;     -- normal mode                          ; 239              ;
+;     -- arithmetic mode                      ; 59               ;
 ;                                             ;                  ;
-; Total registers                             ; 113              ;
-;     -- Dedicated logic registers            ; 113              ;
+; Total registers                             ; 140              ;
+;     -- Dedicated logic registers            ; 140              ;
 ;     -- I/O registers                        ; 0                ;
 ;                                             ;                  ;
-; I/O pins                                    ; 3                ;
+; I/O pins                                    ; 4                ;
 ;                                             ;                  ;
 ; Embedded Multiplier 9-bit elements          ; 0                ;
 ;                                             ;                  ;
 ; Maximum fan-out node                        ; clock_50_i~input ;
-; Maximum fan-out                             ; 113              ;
-; Total fan-out                               ; 880              ;
-; Average fan-out                             ; 2.84             ;
+; Maximum fan-out                             ; 140              ;
+; Total fan-out                               ; 1294             ;
+; Average fan-out                             ; 2.90             ;
 +---------------------------------------------+------------------+
 
 
-+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-; Analysis & Synthesis Resource Utilization by Entity                                                                                                                                                                                                                                                                               ;
-+-------------------------------------------------+---------------------+---------------------------+-------------+------------+--------------+---------+-----------+------+--------------+------------+-----------------------------------------------------------------------------------+-------------------------+--------------+
-; Compilation Hierarchy Node                      ; Combinational ALUTs ; Dedicated Logic Registers ; Memory Bits ; UFM Blocks ; DSP Elements ; DSP 9x9 ; DSP 18x18 ; Pins ; Virtual Pins ; ADC blocks ; Full Hierarchy Name                                                               ; Entity Name             ; Library Name ;
-+-------------------------------------------------+---------------------+---------------------------+-------------+------------+--------------+---------+-----------+------+--------------+------------+-----------------------------------------------------------------------------------+-------------------------+--------------+
-; |de10_lite_fpga1_wrapper                        ; 191 (0)             ; 113 (0)                   ; 0           ; 0          ; 0            ; 0       ; 0         ; 3    ; 0            ; 0          ; |de10_lite_fpga1_wrapper                                                          ; de10_lite_fpga1_wrapper ; work         ;
-;    |fpga1_top:u_core|                           ; 190 (62)            ; 111 (33)                  ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |de10_lite_fpga1_wrapper|fpga1_top:u_core                                         ; fpga1_top               ; work         ;
-;       |fake_sensor_gen:u_fake_sensor_gen|       ; 44 (44)             ; 36 (36)                   ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |de10_lite_fpga1_wrapper|fpga1_top:u_core|fake_sensor_gen:u_fake_sensor_gen       ; fake_sensor_gen         ; work         ;
-;       |frame_builder:u_frame_builder|           ; 19 (19)             ; 16 (16)                   ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |de10_lite_fpga1_wrapper|fpga1_top:u_core|frame_builder:u_frame_builder           ; frame_builder           ; work         ;
-;       |threshold_detector:u_threshold_detector| ; 3 (3)               ; 0 (0)                     ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |de10_lite_fpga1_wrapper|fpga1_top:u_core|threshold_detector:u_threshold_detector ; threshold_detector      ; work         ;
-;       |uart_tx:u_uart_tx|                       ; 62 (62)             ; 26 (26)                   ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |de10_lite_fpga1_wrapper|fpga1_top:u_core|uart_tx:u_uart_tx                       ; uart_tx                 ; work         ;
-;    |reset_sync:u_reset_sync|                    ; 1 (1)               ; 2 (2)                     ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |de10_lite_fpga1_wrapper|reset_sync:u_reset_sync                                  ; reset_sync              ; work         ;
-+-------------------------------------------------+---------------------+---------------------------+-------------+------------+--------------+---------+-----------+------+--------------+------------+-----------------------------------------------------------------------------------+-------------------------+--------------+
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Analysis & Synthesis Resource Utilization by Entity                                                                                                                                                                                                                                                                           ;
++-----------------------------------------------+---------------------+---------------------------+-------------+------------+--------------+---------+-----------+------+--------------+------------+---------------------------------------------------------------------------------+-------------------------+--------------+
+; Compilation Hierarchy Node                    ; Combinational ALUTs ; Dedicated Logic Registers ; Memory Bits ; UFM Blocks ; DSP Elements ; DSP 9x9 ; DSP 18x18 ; Pins ; Virtual Pins ; ADC blocks ; Full Hierarchy Name                                                             ; Entity Name             ; Library Name ;
++-----------------------------------------------+---------------------+---------------------------+-------------+------------+--------------+---------+-----------+------+--------------+------------+---------------------------------------------------------------------------------+-------------------------+--------------+
+; |de10_lite_fpga1_wrapper                      ; 298 (0)             ; 140 (0)                   ; 0           ; 0          ; 0            ; 0       ; 0         ; 4    ; 0            ; 0          ; |de10_lite_fpga1_wrapper                                                        ; de10_lite_fpga1_wrapper ; work         ;
+;    |fpga1_top:u_core|                         ; 297 (52)            ; 138 (34)                  ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |de10_lite_fpga1_wrapper|fpga1_top:u_core                                       ; fpga1_top               ; work         ;
+;       |fake_sensor_gen:u_fake_sensor_gen|     ; 91 (91)             ; 37 (37)                   ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |de10_lite_fpga1_wrapper|fpga1_top:u_core|fake_sensor_gen:u_fake_sensor_gen     ; fake_sensor_gen         ; work         ;
+;       |frame_builder:u_frame_builder|         ; 79 (79)             ; 41 (41)                   ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |de10_lite_fpga1_wrapper|fpga1_top:u_core|frame_builder:u_frame_builder         ; frame_builder           ; work         ;
+;       |sample_classifier:u_sample_classifier| ; 5 (5)               ; 0 (0)                     ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |de10_lite_fpga1_wrapper|fpga1_top:u_core|sample_classifier:u_sample_classifier ; sample_classifier       ; work         ;
+;       |sample_validator:u_sample_validator|   ; 8 (8)               ; 0 (0)                     ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |de10_lite_fpga1_wrapper|fpga1_top:u_core|sample_validator:u_sample_validator   ; sample_validator        ; work         ;
+;       |uart_tx:u_uart_tx|                     ; 62 (62)             ; 26 (26)                   ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |de10_lite_fpga1_wrapper|fpga1_top:u_core|uart_tx:u_uart_tx                     ; uart_tx                 ; work         ;
+;    |reset_sync:u_reset_sync|                  ; 1 (1)               ; 2 (2)                     ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |de10_lite_fpga1_wrapper|reset_sync:u_reset_sync                                ; reset_sync              ; work         ;
++-----------------------------------------------+---------------------+---------------------------+-------------+------------+--------------+---------+-----------+------+--------------+------------+---------------------------------------------------------------------------------+-------------------------+--------------+
 Note: For table entries with two numbers listed, the numbers in parentheses indicate the number of resources of the given type used by the specific entity alone. The numbers listed outside of parentheses indicate the total resources of the given type used by the specific entity and all of its sub-entities in the hierarchy.
 
 
@@ -272,32 +277,39 @@ Encoding Type:  One-Hot
 +------------------------------------------------------------------+------------------------------------------------------------------------------+
 ; Register name                                                    ; Reason for Removal                                                           ;
 +------------------------------------------------------------------+------------------------------------------------------------------------------+
-; fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[4][0] ; Merged with fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[4][4] ;
-; fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[4][2] ; Merged with fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[4][4] ;
-; fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[4][6] ; Merged with fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[4][4] ;
-; fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[0][1] ; Merged with fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[4][4] ;
-; fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[0][3] ; Merged with fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[4][4] ;
-; fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[0][5] ; Merged with fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[4][4] ;
-; fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[0][7] ; Merged with fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[4][4] ;
-; fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[3][4] ; Merged with fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[4][3] ;
-; fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[2][4] ; Merged with fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[4][3] ;
-; fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[0][4] ; Merged with fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[4][3] ;
-; fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[3][6] ; Merged with fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[4][3] ;
-; fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[2][6] ; Merged with fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[4][3] ;
-; fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[0][2] ; Merged with fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[4][3] ;
-; fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[0][6] ; Merged with fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[4][3] ;
-; fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[3][2] ; Merged with fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[4][3] ;
-; fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[3][3] ; Merged with fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[4][3] ;
-; fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[3][5] ; Merged with fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[4][3] ;
-; fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[3][7] ; Merged with fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[4][3] ;
-; fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[2][5] ; Merged with fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[4][3] ;
-; fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[2][7] ; Merged with fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[4][3] ;
-; fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[4][1] ; Merged with fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[4][3] ;
-; fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[4][5] ; Merged with fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[4][3] ;
-; fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[4][7] ; Merged with fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[4][3] ;
-; fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[0][0] ; Merged with fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[4][3] ;
-; fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[4][3] ; Stuck at GND due to stuck port data_in                                       ;
-; Total Number of Removed Registers = 25                           ;                                                                              ;
+; fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[3][7] ; Merged with fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[5][7] ;
+; fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[1][7] ; Merged with fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[5][7] ;
+; fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[5][5] ; Merged with fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[5][7] ;
+; fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[1][3] ; Merged with fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[5][7] ;
+; fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[0][3] ; Merged with fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[5][7] ;
+; fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[7][5] ; Merged with fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[5][7] ;
+; fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[3][5] ; Merged with fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[5][7] ;
+; fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[5][3] ; Merged with fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[5][7] ;
+; fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[1][1] ; Merged with fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[5][7] ;
+; fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[1][5] ; Merged with fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[5][7] ;
+; fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[0][1] ; Merged with fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[5][7] ;
+; fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[7][7] ; Merged with fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[5][7] ;
+; fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[7][0] ; Merged with fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[5][7] ;
+; fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[3][4] ; Merged with fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[5][7] ;
+; fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[5][6] ; Merged with fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[5][7] ;
+; fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[3][6] ; Merged with fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[5][7] ;
+; fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[5][4] ; Merged with fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[5][7] ;
+; fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[1][2] ; Merged with fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[5][7] ;
+; fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[1][6] ; Merged with fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[5][7] ;
+; fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[0][4] ; Merged with fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[5][7] ;
+; fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[0][6] ; Merged with fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[5][7] ;
+; fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[7][2] ; Merged with fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[5][7] ;
+; fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[0][7] ; Merged with fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[7][6] ;
+; fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[7][1] ; Merged with fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[7][6] ;
+; fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[0][5] ; Merged with fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[7][6] ;
+; fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[7][3] ; Merged with fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[7][6] ;
+; fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[1][0] ; Merged with fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[7][6] ;
+; fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[1][4] ; Merged with fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[7][6] ;
+; fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[0][0] ; Merged with fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[7][6] ;
+; fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[0][2] ; Merged with fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[7][6] ;
+; fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[7][4] ; Merged with fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[7][6] ;
+; fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[5][7] ; Stuck at GND due to stuck port data_in                                       ;
+; Total Number of Removed Registers = 32                           ;                                                                              ;
 +------------------------------------------------------------------+------------------------------------------------------------------------------+
 
 
@@ -306,26 +318,33 @@ Encoding Type:  One-Hot
 +----------------------------------------------+-------+
 ; Statistic                                    ; Value ;
 +----------------------------------------------+-------+
-; Total registers                              ; 113   ;
-; Number of registers using Synchronous Clear  ; 52    ;
+; Total registers                              ; 140   ;
+; Number of registers using Synchronous Clear  ; 60    ;
 ; Number of registers using Synchronous Load   ; 0     ;
 ; Number of registers using Asynchronous Clear ; 0     ;
 ; Number of registers using Asynchronous Load  ; 0     ;
-; Number of registers using Clock Enable       ; 58    ;
+; Number of registers using Clock Enable       ; 78    ;
 ; Number of registers using Preset             ; 0     ;
 +----------------------------------------------+-------+
 
 
-+-----------------------------------------------------+
-; Inverted Register Statistics                        ;
-+-------------------------------------------+---------+
-; Inverted Register                         ; Fan out ;
-+-------------------------------------------+---------+
-; fpga1_top:u_core|uart_tx:u_uart_tx|tx_reg ; 2       ;
-; reset_sync:u_reset_sync|reset_pipe[0]     ; 89      ;
-; reset_sync:u_reset_sync|reset_pipe[1]     ; 1       ;
-; Total number of inverted registers = 3    ;         ;
-+-------------------------------------------+---------+
++---------------------------------------------------------------------------------+
+; Inverted Register Statistics                                                    ;
++-----------------------------------------------------------------------+---------+
+; Inverted Register                                                     ; Fan out ;
++-----------------------------------------------------------------------+---------+
+; fpga1_top:u_core|latched_sensor_state[0]                              ; 5       ;
+; fpga1_top:u_core|latched_sensor_state[1]                              ; 5       ;
+; fpga1_top:u_core|uart_tx:u_uart_tx|tx_reg                             ; 2       ;
+; fpga1_top:u_core|fake_sensor_gen:u_fake_sensor_gen|sample_counter[10] ; 9       ;
+; fpga1_top:u_core|fake_sensor_gen:u_fake_sensor_gen|sample_counter[7]  ; 10      ;
+; fpga1_top:u_core|fake_sensor_gen:u_fake_sensor_gen|sample_counter[4]  ; 8       ;
+; fpga1_top:u_core|fake_sensor_gen:u_fake_sensor_gen|sample_counter[5]  ; 8       ;
+; reset_sync:u_reset_sync|reset_pipe[0]                                 ; 110     ;
+; fpga1_top:u_core|fake_sensor_gen:u_fake_sensor_gen|ramp_up_reg        ; 18      ;
+; reset_sync:u_reset_sync|reset_pipe[1]                                 ; 1       ;
+; Total number of inverted registers = 10                               ;         ;
++-----------------------------------------------------------------------+---------+
 
 
 +-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
@@ -333,15 +352,14 @@ Encoding Type:  One-Hot
 +--------------------+-----------+---------------+----------------------+------------------------+------------+-----------------------------------------------------------------------------------------------+
 ; Multiplexer Inputs ; Bus Width ; Baseline Area ; Area if Restructured ; Saving if Restructured ; Registered ; Example Multiplexer Output                                                                    ;
 +--------------------+-----------+---------------+----------------------+------------------------+------------+-----------------------------------------------------------------------------------------------+
-; 3:1                ; 12 bits   ; 24 LEs        ; 12 LEs               ; 12 LEs                 ; Yes        ; |de10_lite_fpga1_wrapper|fpga1_top:u_core|fake_sensor_gen:u_fake_sensor_gen|sample_counter[4] ;
-; 3:1                ; 23 bits   ; 46 LEs        ; 23 LEs               ; 23 LEs                 ; Yes        ; |de10_lite_fpga1_wrapper|fpga1_top:u_core|fake_sensor_gen:u_fake_sensor_gen|divider_count[9]  ;
-; 3:1                ; 14 bits   ; 28 LEs        ; 14 LEs               ; 14 LEs                 ; Yes        ; |de10_lite_fpga1_wrapper|fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[3][1]     ;
+; 3:1                ; 13 bits   ; 26 LEs        ; 13 LEs               ; 13 LEs                 ; Yes        ; |de10_lite_fpga1_wrapper|fpga1_top:u_core|latched_sample[11]                                  ;
+; 3:1                ; 23 bits   ; 46 LEs        ; 23 LEs               ; 23 LEs                 ; Yes        ; |de10_lite_fpga1_wrapper|fpga1_top:u_core|fake_sensor_gen:u_fake_sensor_gen|divider_count[20] ;
+; 3:1                ; 29 bits   ; 58 LEs        ; 29 LEs               ; 29 LEs                 ; Yes        ; |de10_lite_fpga1_wrapper|fpga1_top:u_core|frame_builder:u_frame_builder|frame_bytes[4][7]     ;
 ; 3:1                ; 8 bits    ; 16 LEs        ; 8 LEs                ; 8 LEs                  ; Yes        ; |de10_lite_fpga1_wrapper|fpga1_top:u_core|uart_tx:u_uart_tx|shift_reg[5]                      ;
-; 3:1                ; 13 bits   ; 26 LEs        ; 13 LEs               ; 13 LEs                 ; Yes        ; |de10_lite_fpga1_wrapper|fpga1_top:u_core|latched_sample[5]                                   ;
+; 6:1                ; 8 bits    ; 32 LEs        ; 16 LEs               ; 16 LEs                 ; Yes        ; |de10_lite_fpga1_wrapper|fpga1_top:u_core|fake_sensor_gen:u_fake_sensor_gen|sample_counter[3] ;
+; 8:1                ; 2 bits    ; 10 LEs        ; 6 LEs                ; 4 LEs                  ; Yes        ; |de10_lite_fpga1_wrapper|fpga1_top:u_core|uart_data[7]                                        ;
 ; 7:1                ; 3 bits    ; 12 LEs        ; 3 LEs                ; 9 LEs                  ; Yes        ; |de10_lite_fpga1_wrapper|fpga1_top:u_core|uart_tx:u_uart_tx|bit_index[2]                      ;
-; 7:1                ; 4 bits    ; 16 LEs        ; 8 LEs                ; 8 LEs                  ; Yes        ; |de10_lite_fpga1_wrapper|fpga1_top:u_core|uart_data[4]                                        ;
-; 7:1                ; 2 bits    ; 8 LEs         ; 6 LEs                ; 2 LEs                  ; Yes        ; |de10_lite_fpga1_wrapper|fpga1_top:u_core|uart_data[2]                                        ;
-; 7:1                ; 2 bits    ; 8 LEs         ; 6 LEs                ; 2 LEs                  ; Yes        ; |de10_lite_fpga1_wrapper|fpga1_top:u_core|uart_data[0]                                        ;
+; 6:1                ; 4 bits    ; 16 LEs        ; 12 LEs               ; 4 LEs                  ; Yes        ; |de10_lite_fpga1_wrapper|fpga1_top:u_core|fake_sensor_gen:u_fake_sensor_gen|sample_counter[4] ;
 ; 7:1                ; 2 bits    ; 8 LEs         ; 6 LEs                ; 2 LEs                  ; No         ; |de10_lite_fpga1_wrapper|fpga1_top:u_core|uart_tx:u_uart_tx|state                             ;
 ; 9:1                ; 2 bits    ; 12 LEs        ; 6 LEs                ; 6 LEs                  ; No         ; |de10_lite_fpga1_wrapper|fpga1_top:u_core|uart_tx:u_uart_tx|state                             ;
 ; 10:1               ; 3 bits    ; 18 LEs        ; 12 LEs               ; 6 LEs                  ; No         ; |de10_lite_fpga1_wrapper|fpga1_top:u_core|tx_state                                            ;
@@ -358,6 +376,7 @@ Encoding Type:  One-Hot
 ; G_BAUD_RATE             ; 115200   ; Signed Integer                                     ;
 ; G_SENSOR_UPDATE_DIVIDER ; 5000000  ; Signed Integer                                     ;
 ; G_SENSOR_STEP           ; 17       ; Signed Integer                                     ;
+; G_SOURCE_IS_ADC         ; '0'      ; Enumerated                                         ;
 ; G_RESET_ACTIVE_LEVEL    ; '0'      ; Enumerated                                         ;
 +-------------------------+----------+----------------------------------------------------+
 Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
@@ -383,6 +402,7 @@ Note: In order to hide this table in the UI and the text report file, please set
 ; g_baud_rate             ; 115200   ; Signed Integer           ;
 ; g_sensor_update_divider ; 5000000  ; Signed Integer           ;
 ; g_sensor_step           ; 17       ; Signed Integer           ;
+; g_source_is_adc         ; '0'      ; Enumerated               ;
 +-------------------------+----------+--------------------------+
 Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
 
@@ -409,28 +429,38 @@ Note: In order to hide this table in the UI and the text report file, please set
 Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
 
 
++----------------------------------------------------------------------------+
+; Port Connectivity Checks: "fpga1_top:u_core|frame_builder:u_frame_builder" ;
++---------------+-------+----------+-----------------------------------------+
+; Port          ; Type  ; Severity ; Details                                 ;
++---------------+-------+----------+-----------------------------------------+
+; source_is_adc ; Input ; Info     ; Stuck at GND                            ;
++---------------+-------+----------+-----------------------------------------+
+
+
 +-----------------------------------------------------+
 ; Post-Synthesis Netlist Statistics for Top Partition ;
 +-----------------------+-----------------------------+
 ; Type                  ; Count                       ;
 +-----------------------+-----------------------------+
-; boundary_port         ; 3                           ;
-; cycloneiii_ff         ; 113                         ;
-;     ENA               ; 46                          ;
-;     ENA SCLR          ; 12                          ;
-;     SCLR              ; 40                          ;
-;     plain             ; 15                          ;
-; cycloneiii_lcell_comb ; 192                         ;
-;     arith             ; 41                          ;
-;         2 data inputs ; 41                          ;
-;     normal            ; 151                         ;
-;         1 data inputs ; 4                           ;
-;         2 data inputs ; 54                          ;
-;         3 data inputs ; 25                          ;
-;         4 data inputs ; 68                          ;
+; boundary_port         ; 4                           ;
+; cycloneiii_ff         ; 140                         ;
+;     ENA               ; 64                          ;
+;     ENA SCLR          ; 14                          ;
+;     SCLR              ; 46                          ;
+;     plain             ; 16                          ;
+; cycloneiii_lcell_comb ; 299                         ;
+;     arith             ; 59                          ;
+;         2 data inputs ; 58                          ;
+;         3 data inputs ; 1                           ;
+;     normal            ; 240                         ;
+;         1 data inputs ; 6                           ;
+;         2 data inputs ; 69                          ;
+;         3 data inputs ; 52                          ;
+;         4 data inputs ; 113                         ;
 ;                       ;                             ;
 ; Max LUT depth         ; 7.00                        ;
-; Average LUT depth     ; 2.74                        ;
+; Average LUT depth     ; 3.07                        ;
 +-----------------------+-----------------------------+
 
 
@@ -439,7 +469,7 @@ Note: In order to hide this table in the UI and the text report file, please set
 +----------------+--------------+
 ; Partition Name ; Elapsed Time ;
 +----------------+--------------+
-; Top            ; 00:00:00     ;
+; Top            ; 00:00:01     ;
 +----------------+--------------+
 
 
@@ -449,52 +479,66 @@ Note: In order to hide this table in the UI and the text report file, please set
 Info: *******************************************************************
 Info: Running Quartus Prime Analysis & Synthesis
     Info: Version 25.1std.0 Build 1129 10/21/2025 SC Standard Edition
-    Info: Processing started: Thu Mar 19 15:15:14 2026
+    Info: Processing started: Fri Mar 20 12:36:03 2026
 Info: Command: quartus_map --read_settings_files=on --write_settings_files=off de10_lite_fpga1_wrapper -c de10_lite_fpga1_wrapper
 Warning (18236): Number of processors has not been specified which may cause overloading on shared machines.  Set the global assignment NUM_PARALLEL_PROCESSORS in your QSF to an appropriate value for best performance.
 Info (20030): Parallel compilation is enabled and will use 10 of the 10 processors detected
+Info (12021): Found 2 design units, including 0 entities, in source file /sources/fpga_cem/fpga-dual-system/shared/rtl/dual_fpga_system_pkg.vhd
+    Info (12022): Found design unit 1: dual_fpga_system_pkg File: F:/Sources/FPGA_CEM/fpga-dual-system/shared/rtl/dual_fpga_system_pkg.vhd Line: 5
+    Info (12022): Found design unit 2: dual_fpga_system_pkg-body File: F:/Sources/FPGA_CEM/fpga-dual-system/shared/rtl/dual_fpga_system_pkg.vhd Line: 60
 Info (12021): Found 2 design units, including 1 entities, in source file /sources/fpga_cem/fpga-dual-system/board/de10_lite/common/reset_sync.vhd
     Info (12022): Found design unit 1: reset_sync-rtl File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/common/reset_sync.vhd Line: 17
     Info (12023): Found entity 1: reset_sync File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/common/reset_sync.vhd Line: 5
 Info (12021): Found 2 design units, including 0 entities, in source file /sources/fpga_cem/fpga-dual-system/fpga1_acquisition/src/pkg/fpga1_pkg.vhd
     Info (12022): Found design unit 1: fpga1_pkg File: F:/Sources/FPGA_CEM/fpga-dual-system/fpga1_acquisition/src/pkg/fpga1_pkg.vhd Line: 5
-    Info (12022): Found design unit 2: fpga1_pkg-body File: F:/Sources/FPGA_CEM/fpga-dual-system/fpga1_acquisition/src/pkg/fpga1_pkg.vhd Line: 21
+    Info (12022): Found design unit 2: fpga1_pkg-body File: F:/Sources/FPGA_CEM/fpga-dual-system/fpga1_acquisition/src/pkg/fpga1_pkg.vhd Line: 9
 Info (12021): Found 2 design units, including 1 entities, in source file /sources/fpga_cem/fpga-dual-system/fpga1_acquisition/src/processing/fake_sensor_gen.vhd
     Info (12022): Found design unit 1: fake_sensor_gen-rtl File: F:/Sources/FPGA_CEM/fpga-dual-system/fpga1_acquisition/src/processing/fake_sensor_gen.vhd Line: 21
     Info (12023): Found entity 1: fake_sensor_gen File: F:/Sources/FPGA_CEM/fpga-dual-system/fpga1_acquisition/src/processing/fake_sensor_gen.vhd Line: 8
+Info (12021): Found 2 design units, including 1 entities, in source file /sources/fpga_cem/fpga-dual-system/fpga1_acquisition/src/processing/sample_normalizer.vhd
+    Info (12022): Found design unit 1: sample_normalizer-rtl File: F:/Sources/FPGA_CEM/fpga-dual-system/fpga1_acquisition/src/processing/sample_normalizer.vhd Line: 17
+    Info (12023): Found entity 1: sample_normalizer File: F:/Sources/FPGA_CEM/fpga-dual-system/fpga1_acquisition/src/processing/sample_normalizer.vhd Line: 8
+Info (12021): Found 2 design units, including 1 entities, in source file /sources/fpga_cem/fpga-dual-system/fpga1_acquisition/src/processing/sample_validator.vhd
+    Info (12022): Found design unit 1: sample_validator-rtl File: F:/Sources/FPGA_CEM/fpga-dual-system/fpga1_acquisition/src/processing/sample_validator.vhd Line: 17
+    Info (12023): Found entity 1: sample_validator File: F:/Sources/FPGA_CEM/fpga-dual-system/fpga1_acquisition/src/processing/sample_validator.vhd Line: 8
+Info (12021): Found 2 design units, including 1 entities, in source file /sources/fpga_cem/fpga-dual-system/fpga1_acquisition/src/processing/sample_classifier.vhd
+    Info (12022): Found design unit 1: sample_classifier-rtl File: F:/Sources/FPGA_CEM/fpga-dual-system/fpga1_acquisition/src/processing/sample_classifier.vhd Line: 17
+    Info (12023): Found entity 1: sample_classifier File: F:/Sources/FPGA_CEM/fpga-dual-system/fpga1_acquisition/src/processing/sample_classifier.vhd Line: 8
 Info (12021): Found 2 design units, including 1 entities, in source file /sources/fpga_cem/fpga-dual-system/fpga1_acquisition/src/processing/threshold_detector.vhd
     Info (12022): Found design unit 1: threshold_detector-rtl File: F:/Sources/FPGA_CEM/fpga-dual-system/fpga1_acquisition/src/processing/threshold_detector.vhd Line: 17
     Info (12023): Found entity 1: threshold_detector File: F:/Sources/FPGA_CEM/fpga-dual-system/fpga1_acquisition/src/processing/threshold_detector.vhd Line: 8
 Info (12021): Found 2 design units, including 1 entities, in source file /sources/fpga_cem/fpga-dual-system/fpga1_acquisition/src/link_tx/frame_builder.vhd
-    Info (12022): Found design unit 1: frame_builder-rtl File: F:/Sources/FPGA_CEM/fpga-dual-system/fpga1_acquisition/src/link_tx/frame_builder.vhd Line: 22
+    Info (12022): Found design unit 1: frame_builder-rtl File: F:/Sources/FPGA_CEM/fpga-dual-system/fpga1_acquisition/src/link_tx/frame_builder.vhd Line: 23
     Info (12023): Found entity 1: frame_builder File: F:/Sources/FPGA_CEM/fpga-dual-system/fpga1_acquisition/src/link_tx/frame_builder.vhd Line: 8
 Info (12021): Found 2 design units, including 1 entities, in source file /sources/fpga_cem/fpga-dual-system/fpga1_acquisition/src/link_tx/uart_tx.vhd
     Info (12022): Found design unit 1: uart_tx-rtl File: F:/Sources/FPGA_CEM/fpga-dual-system/fpga1_acquisition/src/link_tx/uart_tx.vhd Line: 23
     Info (12023): Found entity 1: uart_tx File: F:/Sources/FPGA_CEM/fpga-dual-system/fpga1_acquisition/src/link_tx/uart_tx.vhd Line: 8
 Info (12021): Found 2 design units, including 1 entities, in source file /sources/fpga_cem/fpga-dual-system/fpga1_acquisition/src/top/fpga1_top.vhd
-    Info (12022): Found design unit 1: fpga1_top-rtl File: F:/Sources/FPGA_CEM/fpga-dual-system/fpga1_acquisition/src/top/fpga1_top.vhd Line: 22
-    Info (12023): Found entity 1: fpga1_top File: F:/Sources/FPGA_CEM/fpga-dual-system/fpga1_acquisition/src/top/fpga1_top.vhd Line: 8
+    Info (12022): Found design unit 1: fpga1_top-rtl File: F:/Sources/FPGA_CEM/fpga-dual-system/fpga1_acquisition/src/top/fpga1_top.vhd Line: 25
+    Info (12023): Found entity 1: fpga1_top File: F:/Sources/FPGA_CEM/fpga-dual-system/fpga1_acquisition/src/top/fpga1_top.vhd Line: 9
 Info (12021): Found 2 design units, including 1 entities, in source file /sources/fpga_cem/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd
-    Info (12022): Found design unit 1: de10_lite_fpga1_wrapper-rtl File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 23
+    Info (12022): Found design unit 1: de10_lite_fpga1_wrapper-rtl File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 26
     Info (12023): Found entity 1: de10_lite_fpga1_wrapper File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 5
 Info (12127): Elaborating entity "de10_lite_fpga1_wrapper" for the top level hierarchy
-Info (12128): Elaborating entity "reset_sync" for hierarchy "reset_sync:u_reset_sync" File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 26
-Info (12128): Elaborating entity "fpga1_top" for hierarchy "fpga1_top:u_core" File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 37
-Info (12128): Elaborating entity "fake_sensor_gen" for hierarchy "fpga1_top:u_core|fake_sensor_gen:u_fake_sensor_gen" File: F:/Sources/FPGA_CEM/fpga-dual-system/fpga1_acquisition/src/top/fpga1_top.vhd Line: 52
-Info (12128): Elaborating entity "threshold_detector" for hierarchy "fpga1_top:u_core|threshold_detector:u_threshold_detector" File: F:/Sources/FPGA_CEM/fpga-dual-system/fpga1_acquisition/src/top/fpga1_top.vhd Line: 64
-Info (12128): Elaborating entity "frame_builder" for hierarchy "fpga1_top:u_core|frame_builder:u_frame_builder" File: F:/Sources/FPGA_CEM/fpga-dual-system/fpga1_acquisition/src/top/fpga1_top.vhd Line: 72
-Info (12128): Elaborating entity "uart_tx" for hierarchy "fpga1_top:u_core|uart_tx:u_uart_tx" File: F:/Sources/FPGA_CEM/fpga-dual-system/fpga1_acquisition/src/top/fpga1_top.vhd Line: 85
+Info (12128): Elaborating entity "reset_sync" for hierarchy "reset_sync:u_reset_sync" File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 29
+Info (12128): Elaborating entity "fpga1_top" for hierarchy "fpga1_top:u_core" File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 40
+Info (12128): Elaborating entity "fake_sensor_gen" for hierarchy "fpga1_top:u_core|fake_sensor_gen:u_fake_sensor_gen" File: F:/Sources/FPGA_CEM/fpga-dual-system/fpga1_acquisition/src/top/fpga1_top.vhd Line: 58
+Info (12128): Elaborating entity "sample_normalizer" for hierarchy "fpga1_top:u_core|sample_normalizer:u_sample_normalizer" File: F:/Sources/FPGA_CEM/fpga-dual-system/fpga1_acquisition/src/top/fpga1_top.vhd Line: 70
+Info (12128): Elaborating entity "sample_validator" for hierarchy "fpga1_top:u_core|sample_validator:u_sample_validator" File: F:/Sources/FPGA_CEM/fpga-dual-system/fpga1_acquisition/src/top/fpga1_top.vhd Line: 78
+Info (12128): Elaborating entity "sample_classifier" for hierarchy "fpga1_top:u_core|sample_classifier:u_sample_classifier" File: F:/Sources/FPGA_CEM/fpga-dual-system/fpga1_acquisition/src/top/fpga1_top.vhd Line: 86
+Info (12128): Elaborating entity "frame_builder" for hierarchy "fpga1_top:u_core|frame_builder:u_frame_builder" File: F:/Sources/FPGA_CEM/fpga-dual-system/fpga1_acquisition/src/top/fpga1_top.vhd Line: 94
+Info (12128): Elaborating entity "uart_tx" for hierarchy "fpga1_top:u_core|uart_tx:u_uart_tx" File: F:/Sources/FPGA_CEM/fpga-dual-system/fpga1_acquisition/src/top/fpga1_top.vhd Line: 108
 Info (286030): Timing-Driven Synthesis is running
 Info (16010): Generating hard_block partition "hard_block:auto_generated_inst"
     Info (16011): Adding 0 node(s), including 0 DDIO, 0 PLL, 0 transceiver and 0 LCELL
-Info (21057): Implemented 195 device resources after synthesis - the final resource count might be different
+Info (21057): Implemented 305 device resources after synthesis - the final resource count might be different
     Info (21058): Implemented 2 input pins
-    Info (21059): Implemented 1 output pins
-    Info (21061): Implemented 192 logic cells
+    Info (21059): Implemented 2 output pins
+    Info (21061): Implemented 301 logic cells
 Info: Quartus Prime Analysis & Synthesis was successful. 0 errors, 1 warning
     Info: Peak virtual memory: 4932 megabytes
-    Info: Processing ended: Thu Mar 19 15:15:27 2026
-    Info: Elapsed time: 00:00:13
-    Info: Total CPU time (on all processors): 00:00:33
+    Info: Processing ended: Fri Mar 20 12:36:14 2026
+    Info: Elapsed time: 00:00:11
+    Info: Total CPU time (on all processors): 00:00:25
 
 

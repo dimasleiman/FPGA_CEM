@@ -37,6 +37,16 @@ set_global_assignment -name SDC_FILE de10_lite_fpga2_wrapper.sdc
 # set_instance_assignment -name IO_STANDARD "<LED_IO_STANDARD>" -to leds_o[2]
 # set_instance_assignment -name IO_STANDARD "<LED_IO_STANDARD>" -to leds_o[3]
 
+# Active-low seven-segment outputs (bit order = abcdefg over indices 6 downto 0)
+# - hex5_n_o(6 downto 0)
+# - hex4_n_o(6 downto 0)
+# - hex3_n_o(6 downto 0)
+# - hex2_n_o(6 downto 0)
+# - hex1_n_o(6 downto 0)
+# - hex0_n_o(6 downto 0)
+# Add the per-segment DE10-Lite pin assignments here once the final board
+# mapping is chosen in Quartus.
+
 # VGA output
 # set_location_assignment <VGA_HSYNC_PIN> -to vga_hsync_o
 # set_location_assignment <VGA_VSYNC_PIN> -to vga_vsync_o

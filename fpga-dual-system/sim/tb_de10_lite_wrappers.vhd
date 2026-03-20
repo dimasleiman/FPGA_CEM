@@ -21,7 +21,14 @@ architecture sim of tb_de10_lite_wrappers is
     signal fpga1_reset_src_i : std_logic := '0';
     signal fpga2_reset_src_i : std_logic := '0';
     signal uart_link         : std_logic := '1';
+    signal local_error_led_o : std_logic;
     signal leds_o            : std_logic_vector(3 downto 0);
+    signal hex5_n_o          : std_logic_vector(6 downto 0);
+    signal hex4_n_o          : std_logic_vector(6 downto 0);
+    signal hex3_n_o          : std_logic_vector(6 downto 0);
+    signal hex2_n_o          : std_logic_vector(6 downto 0);
+    signal hex1_n_o          : std_logic_vector(6 downto 0);
+    signal hex0_n_o          : std_logic_vector(6 downto 0);
     signal vga_hsync_o       : std_logic;
     signal vga_vsync_o       : std_logic;
     signal vga_r_o           : std_logic_vector(3 downto 0);
@@ -63,6 +70,7 @@ begin
         port map (
             clock_50_i     => clock_50_i,
             reset_source_i => fpga1_reset_src_i,
+            local_error_led_o => local_error_led_o,
             uart_tx_o      => uart_link
         );
 
@@ -79,6 +87,12 @@ begin
             reset_source_i => fpga2_reset_src_i,
             uart_rx_i      => uart_link,
             leds_o         => leds_o,
+            hex5_n_o       => hex5_n_o,
+            hex4_n_o       => hex4_n_o,
+            hex3_n_o       => hex3_n_o,
+            hex2_n_o       => hex2_n_o,
+            hex1_n_o       => hex1_n_o,
+            hex0_n_o       => hex0_n_o,
             vga_hsync_o    => vga_hsync_o,
             vga_vsync_o    => vga_vsync_o,
             vga_r_o        => vga_r_o,
@@ -98,6 +112,17 @@ begin
         wait for 100 * C_CLOCK_PERIOD;
         assert leds_o = C_LED_NO_FRAME
             report "Wrapper-level bring-up should keep FPGA2 LEDs in the no-frame state before the first valid frame."
+            severity failure;
+        assert local_error_led_o = '0'
+            report "Wrapper-level bring-up should keep the FPGA1 local error LED off before the first error-classified sample."
+            severity failure;
+        assert (hex5_n_o = "1111111")
+           and (hex4_n_o = "1111111")
+           and (hex3_n_o = "1111111")
+           and (hex2_n_o = "1111111")
+           and (hex1_n_o = "1111111")
+           and (hex0_n_o = "1111111")
+            report "Wrapper-level bring-up should keep the FPGA2 seven-segment displays blank while the receive link is clean."
             severity failure;
 
         wait_for_led_pattern(
@@ -123,6 +148,17 @@ begin
             cycles => 30_000,
             msg    => "DE10-Lite wrapper flow did not produce the error LED pattern on a later frame."
         );
+        assert local_error_led_o = '1'
+            report "Wrapper-level bring-up should turn on the FPGA1 local error LED once the local classifier reaches the error state."
+            severity failure;
+        assert (hex5_n_o = "1111111")
+           and (hex4_n_o = "1111111")
+           and (hex3_n_o = "1111111")
+           and (hex2_n_o = "1111111")
+           and (hex1_n_o = "1111111")
+           and (hex0_n_o = "1111111")
+            report "Wrapper-level bring-up should keep the FPGA2 seven-segment displays blank when the receive link is still clean."
+            severity failure;
 
         wait until rising_edge(clock_50_i);
         fpga1_reset_src_i <= '0';
@@ -135,6 +171,9 @@ begin
         wait for 100 * C_CLOCK_PERIOD;
         assert leds_o = C_LED_NO_FRAME
             report "Reasserting the board-facing reset source should restore the FPGA2 no-frame LED state."
+            severity failure;
+        assert local_error_led_o = '0'
+            report "Reasserting the board-facing reset source should clear the FPGA1 local error LED."
             severity failure;
 
         wait_for_led_pattern(

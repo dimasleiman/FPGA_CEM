@@ -31,5 +31,9 @@ set_global_assignment -name SDC_FILE de10_lite_fpga1_wrapper.sdc
 # set_location_assignment <UART_TX_PIN> -to uart_tx_o
 # set_instance_assignment -name IO_STANDARD "<UART_TX_IO_STANDARD>" -to uart_tx_o
 
+# local_error_led_o
+# set_location_assignment <LOCAL_ERROR_LED_PIN> -to local_error_led_o
+# set_instance_assignment -name IO_STANDARD "<LED_IO_STANDARD>" -to local_error_led_o
+
 # Optional wrapper generic override:
 # - Set G_RESET_ACTIVE_LEVEL after you choose the real board reset polarity.

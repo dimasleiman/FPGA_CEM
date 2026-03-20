@@ -19,6 +19,13 @@ entity de10_lite_fpga2_wrapper is
         uart_rx_i      : in  std_logic;
         -- To be mapped in Quartus to any four DE10-Lite user LEDs.
         leds_o         : out std_logic_vector(3 downto 0);
+        -- To be mapped in Quartus to the six active-low DE10-Lite seven-segment displays.
+        hex5_n_o       : out std_logic_vector(6 downto 0);
+        hex4_n_o       : out std_logic_vector(6 downto 0);
+        hex3_n_o       : out std_logic_vector(6 downto 0);
+        hex2_n_o       : out std_logic_vector(6 downto 0);
+        hex1_n_o       : out std_logic_vector(6 downto 0);
+        hex0_n_o       : out std_logic_vector(6 downto 0);
         -- To be mapped in Quartus to the DE10-Lite VGA connector.
         vga_hsync_o    : out std_logic;
         vga_vsync_o    : out std_logic;
@@ -54,6 +61,12 @@ begin
             rst         => core_rst,
             uart_rx_i   => uart_rx_i,
             leds_o      => leds_o,
+            hex5_n_o    => hex5_n_o,
+            hex4_n_o    => hex4_n_o,
+            hex3_n_o    => hex3_n_o,
+            hex2_n_o    => hex2_n_o,
+            hex1_n_o    => hex1_n_o,
+            hex0_n_o    => hex0_n_o,
             vga_hsync_o => vga_hsync_o,
             vga_vsync_o => vga_vsync_o,
             vga_r_o     => vga_r_o,

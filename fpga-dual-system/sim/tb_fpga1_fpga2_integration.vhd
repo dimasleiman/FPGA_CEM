@@ -20,7 +20,14 @@ architecture sim of tb_fpga1_fpga2_integration is
     signal clk         : std_logic := '0';
     signal rst         : std_logic := '1';
     signal uart_link   : std_logic := '1';
+    signal local_error_led_o : std_logic;
     signal leds_o      : std_logic_vector(3 downto 0);
+    signal hex5_n_o    : std_logic_vector(6 downto 0);
+    signal hex4_n_o    : std_logic_vector(6 downto 0);
+    signal hex3_n_o    : std_logic_vector(6 downto 0);
+    signal hex2_n_o    : std_logic_vector(6 downto 0);
+    signal hex1_n_o    : std_logic_vector(6 downto 0);
+    signal hex0_n_o    : std_logic_vector(6 downto 0);
     signal vga_hsync_o : std_logic;
     signal vga_vsync_o : std_logic;
     signal vga_r_o     : std_logic_vector(3 downto 0);
@@ -59,9 +66,10 @@ begin
             G_SENSOR_STEP           => C_SENSOR_STEP
         )
         port map (
-            clk       => clk,
-            rst       => rst,
-            uart_tx_o => uart_link
+            clk               => clk,
+            rst               => rst,
+            local_error_led_o => local_error_led_o,
+            uart_tx_o         => uart_link
         );
 
     u_fpga2 : entity work.fpga2_top
@@ -76,6 +84,12 @@ begin
             rst         => rst,
             uart_rx_i   => uart_link,
             leds_o      => leds_o,
+            hex5_n_o    => hex5_n_o,
+            hex4_n_o    => hex4_n_o,
+            hex3_n_o    => hex3_n_o,
+            hex2_n_o    => hex2_n_o,
+            hex1_n_o    => hex1_n_o,
+            hex0_n_o    => hex0_n_o,
             vga_hsync_o => vga_hsync_o,
             vga_vsync_o => vga_vsync_o,
             vga_r_o     => vga_r_o,
@@ -94,6 +108,17 @@ begin
         wait for 100 * C_CLOCK_PERIOD;
         assert leds_o = C_LED_NO_FRAME
             report "FPGA2 LEDs should remain in the no-frame state after reset and before the first valid frame."
+            severity failure;
+        assert local_error_led_o = '0'
+            report "FPGA1 local LED should remain off before the first locally classified error sample."
+            severity failure;
+        assert (hex5_n_o = "1111111")
+           and (hex4_n_o = "1111111")
+           and (hex3_n_o = "1111111")
+           and (hex2_n_o = "1111111")
+           and (hex1_n_o = "1111111")
+           and (hex0_n_o = "1111111")
+            report "FPGA2 seven-segment displays should remain blank while the receive link is clean."
             severity failure;
 
         wait_for_led_pattern(
@@ -119,6 +144,17 @@ begin
             cycles => 30_000,
             msg    => "FPGA2 LEDs did not update to the error pattern on a later valid frame."
         );
+        assert local_error_led_o = '1'
+            report "FPGA1 local LED should turn on when the transmitted sample reaches the existing local error classification."
+            severity failure;
+        assert (hex5_n_o = "1111111")
+           and (hex4_n_o = "1111111")
+           and (hex3_n_o = "1111111")
+           and (hex2_n_o = "1111111")
+           and (hex1_n_o = "1111111")
+           and (hex0_n_o = "1111111")
+            report "FPGA2 seven-segment displays should stay blank in the end-to-end clean-link flow, even when the sensor state is error."
+            severity failure;
 
         report "tb_fpga1_fpga2_integration completed successfully." severity note;
         tb_done <= '1';

@@ -16,6 +16,8 @@ entity de10_lite_fpga1_wrapper is
         clock_50_i     : in  std_logic;
         -- To be mapped in Quartus to a chosen DE10-Lite button or switch.
         reset_source_i : in  std_logic;
+        -- To be mapped in Quartus to a DE10-Lite user LED for local error indication.
+        local_error_led_o : out std_logic;
         -- To be mapped in Quartus to the chosen board-to-board UART output pin.
         uart_tx_o      : out std_logic
     );
@@ -44,8 +46,9 @@ begin
             G_SOURCE_IS_ADC         => G_SOURCE_IS_ADC
         )
         port map (
-            clk       => clock_50_i,
-            rst       => core_rst,
-            uart_tx_o => uart_tx_o
+            clk               => clock_50_i,
+            rst               => core_rst,
+            local_error_led_o => local_error_led_o,
+            uart_tx_o         => uart_tx_o
         );
 end architecture rtl;

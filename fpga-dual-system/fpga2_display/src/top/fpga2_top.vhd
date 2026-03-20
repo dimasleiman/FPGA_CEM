@@ -18,6 +18,12 @@ entity fpga2_top is
         rst         : in  std_logic;
         uart_rx_i   : in  std_logic;
         leds_o      : out std_logic_vector(3 downto 0);
+        hex5_n_o    : out std_logic_vector(6 downto 0);
+        hex4_n_o    : out std_logic_vector(6 downto 0);
+        hex3_n_o    : out std_logic_vector(6 downto 0);
+        hex2_n_o    : out std_logic_vector(6 downto 0);
+        hex1_n_o    : out std_logic_vector(6 downto 0);
+        hex0_n_o    : out std_logic_vector(6 downto 0);
         vga_hsync_o : out std_logic;
         vga_vsync_o : out std_logic;
         vga_r_o     : out std_logic_vector(3 downto 0);
@@ -48,6 +54,12 @@ architecture rtl of fpga2_top is
     constant C_V_FRONT  : positive := select_positive(G_FAST_SIMULATION_VGA, 4, 10);
     constant C_V_SYNC   : positive := select_positive(G_FAST_SIMULATION_VGA, 4, 2);
     constant C_V_BACK   : positive := select_positive(G_FAST_SIMULATION_VGA, 12, 33);
+    constant C_SEG_BLANK_N : std_logic_vector(6 downto 0) := "1111111";
+    constant C_SEG_E_N     : std_logic_vector(6 downto 0) := "0110000";
+    -- Approximate lowercase 'r' with segments e and g; uppercase 'R' is not
+    -- representable on a 7-segment display.
+    constant C_SEG_R_N     : std_logic_vector(6 downto 0) := "1111010";
+    constant C_SEG_O_N     : std_logic_vector(6 downto 0) := "0000001";
 
     signal rx_byte              : t_uart_byte := (others => '0');
     signal rx_data_valid        : std_logic := '0';
@@ -71,6 +83,7 @@ architecture rtl of fpga2_top is
     signal active_video         : std_logic := '0';
     signal pixel_x              : unsigned(11 downto 0) := (others => '0');
     signal pixel_y              : unsigned(11 downto 0) := (others => '0');
+    signal rx_verify_error      : std_logic := '0';
 begin
     u_uart_rx : entity work.uart_rx
         generic map (
@@ -188,4 +201,13 @@ begin
             vga_g_o              => vga_g_o,
             vga_b_o              => vga_b_o
         );
+
+    rx_verify_error <= '1' when comm_state = C_COMM_STATE_DEGRADED else '0';
+
+    hex5_n_o <= C_SEG_BLANK_N;
+    hex4_n_o <= C_SEG_E_N when rx_verify_error = '1' else C_SEG_BLANK_N;
+    hex3_n_o <= C_SEG_R_N when rx_verify_error = '1' else C_SEG_BLANK_N;
+    hex2_n_o <= C_SEG_R_N when rx_verify_error = '1' else C_SEG_BLANK_N;
+    hex1_n_o <= C_SEG_O_N when rx_verify_error = '1' else C_SEG_BLANK_N;
+    hex0_n_o <= C_SEG_R_N when rx_verify_error = '1' else C_SEG_BLANK_N;
 end architecture rtl;

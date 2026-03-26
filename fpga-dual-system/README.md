@@ -151,3 +151,15 @@ Non verifie dans cette mise a jour du depot :
 - `docs/interface_spec.md`
 - `docs/de10_lite_bringup.md`
 - `docs/quartus_project_setup.md`
+
+## Guides complementaires
+
+Pour plus de details sur le role des fichiers, des sous-dossiers et le workflow
+interne de chaque sous-systeme, consulter aussi les README locaux :
+
+- `fpga1_acquisition/README.en.md`
+- `fpga1_acquisition/README.fr.md`
+- `fpga2_display/README.en.md`
+- `fpga2_display/README.fr.md`
+
+Dima Sleiman

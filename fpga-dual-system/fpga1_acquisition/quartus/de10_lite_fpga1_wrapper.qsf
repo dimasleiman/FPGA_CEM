@@ -8,24 +8,129 @@ set_global_assignment -name SDC_FILE de10_lite_fpga1_wrapper.sdc
 set_global_assignment -name VHDL_FILE ../../shared/rtl/dual_fpga_system_pkg.vhd
 set_global_assignment -name VHDL_FILE ../../board/de10_lite/common/reset_sync.vhd
 set_global_assignment -name VHDL_FILE ../../fpga1_acquisition/src/pkg/fpga1_pkg.vhd
+set_global_assignment -name VHDL_FILE ../../fpga1_acquisition/src/display/bin_to_bcd.vhd
+set_global_assignment -name VHDL_FILE ../../fpga1_acquisition/src/display/digit_to_7seg_decimal_n.vhd
 set_global_assignment -name VHDL_FILE ../../fpga1_acquisition/src/processing/fake_sensor_gen.vhd
 set_global_assignment -name VHDL_FILE ../../fpga1_acquisition/src/processing/sample_normalizer.vhd
 set_global_assignment -name VHDL_FILE ../../fpga1_acquisition/src/processing/sample_validator.vhd
+set_global_assignment -name VHDL_FILE ../../fpga1_acquisition/src/processing/sample_noise_monitor.vhd
 set_global_assignment -name VHDL_FILE ../../fpga1_acquisition/src/processing/sample_classifier.vhd
 set_global_assignment -name VHDL_FILE ../../fpga1_acquisition/src/processing/threshold_detector.vhd
 set_global_assignment -name VHDL_FILE ../../fpga1_acquisition/src/link_tx/frame_builder.vhd
 set_global_assignment -name VHDL_FILE ../../fpga1_acquisition/src/link_tx/uart_tx.vhd
 set_global_assignment -name VHDL_FILE ../../fpga1_acquisition/src/top/fpga1_top.vhd
+set_global_assignment -name VHDL_FILE ../../board/de10_lite/fpga1/max10_adc_frontend.vhd
+set_global_assignment -name VERILOG_FILE ../../board/de10_lite/fpga1/ip/altera_up_avalon_adv_adc.v
+set_global_assignment -name VERILOG_FILE ../../board/de10_lite/fpga1/ip/altera_modular_adc_control.v
+set_global_assignment -name VERILOG_FILE ../../board/de10_lite/fpga1/ip/altera_modular_adc_control_avrg_fifo.v
+set_global_assignment -name VERILOG_FILE ../../board/de10_lite/fpga1/ip/altera_modular_adc_control_fsm.v
+set_global_assignment -name VERILOG_FILE ../../board/de10_lite/fpga1/ip/altera_modular_adc_sample_store.v
+set_global_assignment -name VERILOG_FILE ../../board/de10_lite/fpga1/ip/altera_modular_adc_sample_store_ram.v
+set_global_assignment -name VERILOG_FILE ../../board/de10_lite/fpga1/ip/altera_modular_adc_sequencer.v
+set_global_assignment -name VERILOG_FILE ../../board/de10_lite/fpga1/ip/altera_modular_adc_sequencer_csr.v
+set_global_assignment -name VERILOG_FILE ../../board/de10_lite/fpga1/ip/altera_modular_adc_sequencer_ctrl.v
+set_global_assignment -name VERILOG_FILE ../../board/de10_lite/fpga1/ip/chsel_code_converter_sw_to_hw.v
+set_global_assignment -name VERILOG_FILE ../../board/de10_lite/fpga1/ip/DE10_Lite_ADC_Core_modular_adc_0.v
+set_global_assignment -name VERILOG_FILE ../../board/de10_lite/fpga1/ip/fiftyfivenm_adcblock_primitive_wrapper.v
+set_global_assignment -name VERILOG_FILE ../../board/de10_lite/fpga1/ip/fiftyfivenm_adcblock_top_wrapper.v
 set_global_assignment -name VHDL_FILE ../../board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd
 
-# This project file intentionally does not lock in any DE10-Lite pin mapping.
-# Add real pin locations and I/O standards manually in Quartus, or merge the
-# placeholder guidance from de10_lite_placeholder.qsf once your board mapping
-# choices are known.
+# FPGA1 uses LEDR0 / PIN_A8 for the local sensor error indicator.
+# LEDR1..LEDR9 are exposed only to be forced permanently low.
+set_location_assignment PIN_P11 -to clock_50_i
+# FPGA1 reset_source_i now uses KEY0 / PIN_B8 so SW0 / PIN_C10 no longer
+# changes the FPGA1 runtime behavior.
+set_location_assignment PIN_B8 -to reset_source_i
+set_location_assignment PIN_A8 -to local_error_led_o
+set_location_assignment PIN_J20 -to hex5_n_o[0]
+set_location_assignment PIN_K20 -to hex5_n_o[1]
+set_location_assignment PIN_L18 -to hex5_n_o[2]
+set_location_assignment PIN_N18 -to hex5_n_o[3]
+set_location_assignment PIN_M20 -to hex5_n_o[4]
+set_location_assignment PIN_N19 -to hex5_n_o[5]
+set_location_assignment PIN_N20 -to hex5_n_o[6]
+set_location_assignment PIN_F18 -to hex4_n_o[0]
+set_location_assignment PIN_E20 -to hex4_n_o[1]
+set_location_assignment PIN_E19 -to hex4_n_o[2]
+set_location_assignment PIN_J18 -to hex4_n_o[3]
+set_location_assignment PIN_H19 -to hex4_n_o[4]
+set_location_assignment PIN_F19 -to hex4_n_o[5]
+set_location_assignment PIN_F20 -to hex4_n_o[6]
+set_location_assignment PIN_F21 -to hex3_n_o[0]
+set_location_assignment PIN_E22 -to hex3_n_o[1]
+set_location_assignment PIN_E21 -to hex3_n_o[2]
+set_location_assignment PIN_C19 -to hex3_n_o[3]
+set_location_assignment PIN_C20 -to hex3_n_o[4]
+set_location_assignment PIN_D19 -to hex3_n_o[5]
+set_location_assignment PIN_E17 -to hex3_n_o[6]
+set_location_assignment PIN_B20 -to hex2_n_o[0]
+set_location_assignment PIN_A20 -to hex2_n_o[1]
+set_location_assignment PIN_B19 -to hex2_n_o[2]
+set_location_assignment PIN_A21 -to hex2_n_o[3]
+set_location_assignment PIN_B21 -to hex2_n_o[4]
+set_location_assignment PIN_C22 -to hex2_n_o[5]
+set_location_assignment PIN_B22 -to hex2_n_o[6]
+set_location_assignment PIN_C18 -to hex1_n_o[0]
+set_location_assignment PIN_D18 -to hex1_n_o[1]
+set_location_assignment PIN_E18 -to hex1_n_o[2]
+set_location_assignment PIN_B16 -to hex1_n_o[3]
+set_location_assignment PIN_A17 -to hex1_n_o[4]
+set_location_assignment PIN_A18 -to hex1_n_o[5]
+set_location_assignment PIN_B17 -to hex1_n_o[6]
+set_location_assignment PIN_C14 -to hex0_n_o[0]
+set_location_assignment PIN_E15 -to hex0_n_o[1]
+set_location_assignment PIN_C15 -to hex0_n_o[2]
+set_location_assignment PIN_C16 -to hex0_n_o[3]
+set_location_assignment PIN_E16 -to hex0_n_o[4]
+set_location_assignment PIN_D17 -to hex0_n_o[5]
+set_location_assignment PIN_C17 -to hex0_n_o[6]
+set_location_assignment PIN_A9 -to ledr1_o
+set_location_assignment PIN_A10 -to ledr2_o
+set_location_assignment PIN_B10 -to ledr3_o
+set_location_assignment PIN_D13 -to ledr4_o
+set_location_assignment PIN_C13 -to ledr5_o
+set_location_assignment PIN_E14 -to ledr6_o
+set_location_assignment PIN_D14 -to ledr7_o
+set_location_assignment PIN_A11 -to ledr8_o
+set_location_assignment PIN_B11 -to ledr9_o
+set_location_assignment PIN_V10 -to uart_tx_o
+
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to clock_50_i
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to reset_source_i
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to local_error_led_o
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to hex5_n_o
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to hex4_n_o
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to hex3_n_o
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to hex2_n_o
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to hex1_n_o
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to hex0_n_o
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to ledr1_o
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to ledr2_o
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to ledr3_o
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to ledr4_o
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to ledr5_o
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to ledr6_o
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to ledr7_o
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to ledr8_o
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to ledr9_o
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to uart_tx_o
 
 set_global_assignment -name LAST_QUARTUS_VERSION "25.1std.0 Standard Edition"
 set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top
 set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -section_id Top
 set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top
+
+set_global_assignment -name MIN_CORE_JUNCTION_TEMP 0
+set_global_assignment -name MAX_CORE_JUNCTION_TEMP 85
+set_global_assignment -name POWER_PRESET_COOLING_SOLUTION "23 MM HEAT SINK WITH 200 LFPM AIRFLOW"
+set_global_assignment -name POWER_BOARD_THERMAL_MODEL "NONE (CONSERVATIVE)"
+
+
+
+
+
+
+
+
 
 set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top

@@ -17,21 +17,30 @@ Fichier : `fpga1_acquisition/src/top/fpga1_top.vhd`
 
 - `G_CLOCK_FREQ_HZ`
 - `G_BAUD_RATE`
-- `G_SENSOR_UPDATE_DIVIDER`
-- `G_SENSOR_STEP`
 - `G_SOURCE_IS_ADC`
 
 ### Ports
 
 - `clk`
 - `rst`
+- `sample_value_i`
+- `sample_valid_i`
+- `local_error_led_o`
+- `hex5_n_o`
+- `hex4_n_o`
+- `hex3_n_o`
+- `hex2_n_o`
+- `hex1_n_o`
+- `hex0_n_o`
 - `uart_tx_o`
 
 Remarques :
 
-- la phase 1 conserve le capteur factice a l'interieur du top coeur
+- le top coeur FPGA1 ne contient plus de source capteur interne
+- la selection de source (ADC reel, source fixe de test, ou `fake_sensor_gen`)
+  se fait dans le wrapper carte
 - `G_SOURCE_IS_ADC` ne sert actuellement qu'a renseigner les drapeaux transmis
-- l'integration ADC reelle MAX 10 n'est pas encore cablee dans ce top du depot
+- l'integration ADC reelle MAX 10 reste externe au coeur reutilisable
 
 ## Top coeur FPGA2
 

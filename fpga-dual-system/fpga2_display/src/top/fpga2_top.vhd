@@ -4,14 +4,19 @@ use ieee.numeric_std.all;
 
 library work;
 use work.dual_fpga_system_pkg.all;
-use work.fpga2_pkg.all;
 
 entity fpga2_top is
     generic (
         G_CLOCK_FREQ_HZ        : positive := 50_000_000;
         G_BAUD_RATE            : positive := 115_200;
         G_FRAME_TIMEOUT_CLKS   : positive := 25_000_000;
-        G_FAST_SIMULATION_VGA  : boolean  := false
+        G_FAST_SIMULATION_VGA  : boolean  := false;
+        G_USE_INTERNAL_UART_TEST_SOURCE : boolean := false;
+        G_INTERNAL_UART_FRAME_GAP_CLKS : positive := 5_000_000;
+        G_INTERNAL_UART_SAMPLE_HOLD_FRAMES : positive := 20;
+        G_INTERNAL_UART_SAMPLE_STEP : positive := 100;
+        G_INTERNAL_UART_CORRUPT_FRAME_TEST : boolean := false;
+        G_INTERNAL_UART_CORRUPT_FRAME_PERIOD : positive := 8
     );
     port (
         clk         : in  std_logic;
@@ -55,11 +60,18 @@ architecture rtl of fpga2_top is
     constant C_V_SYNC   : positive := select_positive(G_FAST_SIMULATION_VGA, 4, 2);
     constant C_V_BACK   : positive := select_positive(G_FAST_SIMULATION_VGA, 12, 33);
     constant C_SEG_BLANK_N : std_logic_vector(6 downto 0) := "1111111";
-    constant C_SEG_E_N     : std_logic_vector(6 downto 0) := "0110000";
+    -- DE10-Lite segments are active-low and indexed 0..6. Because these
+    -- vectors are declared (6 downto 0), the literals are written in gfedcba
+    -- order to match the corrected FPGA1 decimal decoder.
+    constant C_SEG_G_N     : std_logic_vector(6 downto 0) := "0000010";
+    constant C_SEG_E_N     : std_logic_vector(6 downto 0) := "0000110";
     -- Approximate lowercase 'r' with segments e and g; uppercase 'R' is not
     -- representable on a 7-segment display.
-    constant C_SEG_R_N     : std_logic_vector(6 downto 0) := "1111010";
-    constant C_SEG_O_N     : std_logic_vector(6 downto 0) := "0000001";
+    constant C_SEG_R_N     : std_logic_vector(6 downto 0) := "0101111";
+    -- Approximate lowercase 'n' with segments c, e and g.
+    constant C_SEG_N_N     : std_logic_vector(6 downto 0) := "0101011";
+    constant C_SEG_O_N     : std_logic_vector(6 downto 0) := "1000000";
+    constant C_SEG_D_N     : std_logic_vector(6 downto 0) := "0100001";
 
     signal rx_byte              : t_uart_byte := (others => '0');
     signal rx_data_valid        : std_logic := '0';
@@ -78,13 +90,37 @@ architecture rtl of fpga2_top is
     signal corrupted_frames     : t_counter := (others => '0');
     signal missing_frames       : t_counter := (others => '0');
     signal timeout_events       : t_counter := (others => '0');
-    signal led_pattern          : std_logic_vector(3 downto 0) := C_LED_NO_FRAME;
     signal pixel_ce             : std_logic := '0';
     signal active_video         : std_logic := '0';
     signal pixel_x              : unsigned(11 downto 0) := (others => '0');
     signal pixel_y              : unsigned(11 downto 0) := (others => '0');
-    signal rx_verify_error      : std_logic := '0';
+    signal display_good         : std_logic := '0';
+    signal display_none         : std_logic := '0';
+    signal selected_uart_rx     : std_logic := '1';
+    signal internal_uart_rx     : std_logic := '1';
 begin
+    selected_uart_rx <= internal_uart_rx when G_USE_INTERNAL_UART_TEST_SOURCE else uart_rx_i;
+
+    gen_internal_uart_test_source : if G_USE_INTERNAL_UART_TEST_SOURCE generate
+    begin
+        u_internal_uart_frame_gen : entity work.internal_uart_frame_gen
+            generic map (
+                G_CLOCK_FREQ_HZ            => G_CLOCK_FREQ_HZ,
+                G_BAUD_RATE                => G_BAUD_RATE,
+                G_FRAME_GAP_CLKS           => G_INTERNAL_UART_FRAME_GAP_CLKS,
+                G_SAMPLE_HOLD_FRAMES       => G_INTERNAL_UART_SAMPLE_HOLD_FRAMES,
+                G_SAMPLE_STEP              => G_INTERNAL_UART_SAMPLE_STEP,
+                G_SOURCE_IS_ADC            => '0',
+                G_ENABLE_CORRUPT_FRAME_TEST => G_INTERNAL_UART_CORRUPT_FRAME_TEST,
+                G_CORRUPT_FRAME_PERIOD     => G_INTERNAL_UART_CORRUPT_FRAME_PERIOD
+            )
+            port map (
+                clk       => clk,
+                rst       => rst,
+                uart_tx_o => internal_uart_rx
+            );
+    end generate;
+
     u_uart_rx : entity work.uart_rx
         generic map (
             G_CLOCK_FREQ_HZ => G_CLOCK_FREQ_HZ,
@@ -93,7 +129,7 @@ begin
         port map (
             clk        => clk,
             rst        => rst,
-            rx         => uart_rx_i,
+            rx         => selected_uart_rx,
             data_out   => rx_byte,
             data_valid => rx_data_valid
         );
@@ -138,22 +174,6 @@ begin
             current_sensor_value_o => current_sensor_value,
             current_sensor_state_o => current_sensor_state,
             comm_state_o           => comm_state
-        );
-
-    u_status_mapper : entity work.status_mapper
-        port map (
-            sensor_state => current_sensor_state,
-            comm_state   => comm_state,
-            led_pattern  => led_pattern
-        );
-
-    u_led_driver : entity work.led_driver
-        port map (
-            clk    => clk,
-            rst    => rst,
-            load   => frame_activity_pulse or frame_valid_pulse or frame_corrupt_pulse,
-            led_in => led_pattern,
-            leds   => leds_o
         );
 
     u_vga_timing : entity work.vga_timing
@@ -202,12 +222,27 @@ begin
             vga_b_o              => vga_b_o
         );
 
-    rx_verify_error <= '1' when comm_state = C_COMM_STATE_DEGRADED else '0';
+    -- FPGA2 uses the seven-segment display as a link-integrity indicator:
+    -- GOOD for a clean link, NONE when no frame is available, and ERROR only
+    -- when the receive link is degraded.
+    display_good <= '1' when comm_state = C_COMM_STATE_OK else '0';
+    display_none <= '1'
+        when (comm_state = C_COMM_STATE_NO_FRAME) or (comm_state = C_COMM_STATE_TIMEOUT)
+        else '0';
+
+    -- Board LEDs stay disabled on FPGA2 in every mode.
+    leds_o <= (others => '0');
 
     hex5_n_o <= C_SEG_BLANK_N;
-    hex4_n_o <= C_SEG_E_N when rx_verify_error = '1' else C_SEG_BLANK_N;
-    hex3_n_o <= C_SEG_R_N when rx_verify_error = '1' else C_SEG_BLANK_N;
-    hex2_n_o <= C_SEG_R_N when rx_verify_error = '1' else C_SEG_BLANK_N;
-    hex1_n_o <= C_SEG_O_N when rx_verify_error = '1' else C_SEG_BLANK_N;
-    hex0_n_o <= C_SEG_R_N when rx_verify_error = '1' else C_SEG_BLANK_N;
+    hex4_n_o <= C_SEG_BLANK_N when (display_good = '1') or (display_none = '1') else C_SEG_E_N;
+    hex3_n_o <= C_SEG_G_N when display_good = '1'
+                else C_SEG_N_N when display_none = '1'
+                else C_SEG_R_N;
+    hex2_n_o <= C_SEG_O_N when (display_good = '1') or (display_none = '1') else C_SEG_R_N;
+    hex1_n_o <= C_SEG_O_N when display_good = '1'
+                else C_SEG_N_N when display_none = '1'
+                else C_SEG_O_N;
+    hex0_n_o <= C_SEG_D_N when display_good = '1'
+                else C_SEG_E_N when display_none = '1'
+                else C_SEG_R_N;
 end architecture rtl;

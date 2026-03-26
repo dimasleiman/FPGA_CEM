@@ -4,7 +4,6 @@ use ieee.numeric_std.all;
 
 library work;
 use work.dual_fpga_system_pkg.all;
-use work.fpga2_pkg.all;
 
 entity tb_fpga2_top is
 end entity tb_fpga2_top;
@@ -15,10 +14,18 @@ architecture sim of tb_fpga2_top is
     constant C_BAUD_RATE            : positive := 10_000;
     constant C_FRAME_TIMEOUT_CLKS   : positive := 20_000;
     constant C_BIT_PERIOD           : time     := C_CLOCK_PERIOD * (C_CLOCK_FREQ_HZ / C_BAUD_RATE);
+    subtype t_seg_word is std_logic_vector(41 downto 0);
+    constant C_LEDS_OFF             : std_logic_vector(3 downto 0) := (others => '0');
     constant C_SEG_BLANK_N          : std_logic_vector(6 downto 0) := "1111111";
-    constant C_SEG_E_N              : std_logic_vector(6 downto 0) := "0110000";
-    constant C_SEG_R_N              : std_logic_vector(6 downto 0) := "1111010";
-    constant C_SEG_O_N              : std_logic_vector(6 downto 0) := "0000001";
+    constant C_SEG_G_N              : std_logic_vector(6 downto 0) := "0000010";
+    constant C_SEG_E_N              : std_logic_vector(6 downto 0) := "0000110";
+    constant C_SEG_R_N              : std_logic_vector(6 downto 0) := "0101111";
+    constant C_SEG_N_N              : std_logic_vector(6 downto 0) := "0101011";
+    constant C_SEG_O_N              : std_logic_vector(6 downto 0) := "1000000";
+    constant C_SEG_D_N              : std_logic_vector(6 downto 0) := "0100001";
+    constant C_DISPLAY_GOOD         : t_seg_word := C_SEG_BLANK_N & C_SEG_BLANK_N & C_SEG_G_N & C_SEG_O_N & C_SEG_O_N & C_SEG_D_N;
+    constant C_DISPLAY_NONE         : t_seg_word := C_SEG_BLANK_N & C_SEG_BLANK_N & C_SEG_N_N & C_SEG_O_N & C_SEG_N_N & C_SEG_E_N;
+    constant C_DISPLAY_ERROR        : t_seg_word := C_SEG_BLANK_N & C_SEG_E_N & C_SEG_R_N & C_SEG_R_N & C_SEG_O_N & C_SEG_R_N;
 
     signal clk              : std_logic := '0';
     signal rst              : std_logic := '1';
@@ -134,99 +141,64 @@ begin
         rst <= '0';
 
         wait for 20 * C_CLOCK_PERIOD;
-        assert leds_o = C_LED_NO_FRAME
-            report "FPGA2 LEDs should start in the no-frame state."
+        assert leds_o = C_LEDS_OFF
+            report "FPGA2 LEDs should stay off before the receive link becomes clean."
             severity failure;
-        assert (hex5_n_o = C_SEG_BLANK_N)
-           and (hex4_n_o = C_SEG_BLANK_N)
-           and (hex3_n_o = C_SEG_BLANK_N)
-           and (hex2_n_o = C_SEG_BLANK_N)
-           and (hex1_n_o = C_SEG_BLANK_N)
-           and (hex0_n_o = C_SEG_BLANK_N)
-            report "FPGA2 seven-segment displays should stay blank before any receive-side verification error."
+        assert (hex5_n_o & hex4_n_o & hex3_n_o & hex2_n_o & hex1_n_o & hex0_n_o) = C_DISPLAY_NONE
+            report "FPGA2 seven-segment displays should spell NONE before any frame is received."
             severity failure;
 
         send_frame(uart_rx_line, 0, 2000);
         wait for 20 * C_BIT_PERIOD;
-        assert leds_o = C_LED_NORMAL
-            report "FPGA2 LEDs should show the normal pattern after a valid normal frame."
+        assert leds_o = C_LEDS_OFF
+            report "FPGA2 LEDs should stay off after a valid normal frame."
             severity failure;
-        assert (hex5_n_o = C_SEG_BLANK_N)
-           and (hex4_n_o = C_SEG_BLANK_N)
-           and (hex3_n_o = C_SEG_BLANK_N)
-           and (hex2_n_o = C_SEG_BLANK_N)
-           and (hex1_n_o = C_SEG_BLANK_N)
-           and (hex0_n_o = C_SEG_BLANK_N)
-            report "FPGA2 seven-segment displays should stay blank after a clean frame."
+        assert (hex5_n_o & hex4_n_o & hex3_n_o & hex2_n_o & hex1_n_o & hex0_n_o) = C_DISPLAY_GOOD
+            report "FPGA2 seven-segment displays should spell GOOD after a clean non-error frame."
             severity failure;
 
         send_frame(uart_rx_line, 1, 3000);
         wait for 20 * C_BIT_PERIOD;
-        assert leds_o = C_LED_WARNING
-            report "FPGA2 LEDs should show the warning pattern after a valid warning frame."
+        assert leds_o = C_LEDS_OFF
+            report "FPGA2 LEDs should stay off after a valid warning frame."
             severity failure;
-        assert (hex5_n_o = C_SEG_BLANK_N)
-           and (hex4_n_o = C_SEG_BLANK_N)
-           and (hex3_n_o = C_SEG_BLANK_N)
-           and (hex2_n_o = C_SEG_BLANK_N)
-           and (hex1_n_o = C_SEG_BLANK_N)
-           and (hex0_n_o = C_SEG_BLANK_N)
-            report "FPGA2 seven-segment displays should not flag a receive error for a clean warning-state frame."
+        assert (hex5_n_o & hex4_n_o & hex3_n_o & hex2_n_o & hex1_n_o & hex0_n_o) = C_DISPLAY_GOOD
+            report "FPGA2 seven-segment displays should keep GOOD for a clean warning-state frame."
             severity failure;
 
         send_frame(uart_rx_line, 2, 2200, true);
         wait for 20 * C_BIT_PERIOD;
-        assert leds_o = C_LED_LINK_WARN
-            report "FPGA2 LEDs should show the link-warning pattern after a corrupted frame."
+        assert leds_o = C_LEDS_OFF
+            report "FPGA2 LEDs should stay off after a corrupted frame."
             severity failure;
-        assert (hex5_n_o = C_SEG_BLANK_N)
-           and (hex4_n_o = C_SEG_E_N)
-           and (hex3_n_o = C_SEG_R_N)
-           and (hex2_n_o = C_SEG_R_N)
-           and (hex1_n_o = C_SEG_O_N)
-           and (hex0_n_o = C_SEG_R_N)
-            report "FPGA2 seven-segment displays should spell the ERROR approximation after a corrupted frame."
+        assert (hex5_n_o & hex4_n_o & hex3_n_o & hex2_n_o & hex1_n_o & hex0_n_o) = C_DISPLAY_ERROR
+            report "FPGA2 seven-segment displays should spell ERROR after a corrupted frame."
             severity failure;
 
         send_frame(uart_rx_line, 4, 2000);
         wait for 20 * C_BIT_PERIOD;
-        assert leds_o = C_LED_LINK_WARN
-            report "FPGA2 LEDs should stay in the link-warning pattern when sequence continuity is broken."
+        assert leds_o = C_LEDS_OFF
+            report "FPGA2 LEDs should stay off when sequence continuity is broken."
             severity failure;
-        assert (hex5_n_o = C_SEG_BLANK_N)
-           and (hex4_n_o = C_SEG_E_N)
-           and (hex3_n_o = C_SEG_R_N)
-           and (hex2_n_o = C_SEG_R_N)
-           and (hex1_n_o = C_SEG_O_N)
-           and (hex0_n_o = C_SEG_R_N)
-            report "FPGA2 seven-segment displays should keep the ERROR approximation while the receive link stays degraded."
+        assert (hex5_n_o & hex4_n_o & hex3_n_o & hex2_n_o & hex1_n_o & hex0_n_o) = C_DISPLAY_ERROR
+            report "FPGA2 seven-segment displays should keep ERROR while the receive link stays degraded."
             severity failure;
 
         send_frame(uart_rx_line, 5, 3500);
         wait for 20 * C_BIT_PERIOD;
-        assert leds_o = C_LED_ERROR
-            report "FPGA2 LEDs should recover to the current sensor error state after a clean frame."
+        assert leds_o = C_LEDS_OFF
+            report "FPGA2 LEDs should stay off after a clean frame whose transmitted sensor value is in the error range."
             severity failure;
-        assert (hex5_n_o = C_SEG_BLANK_N)
-           and (hex4_n_o = C_SEG_BLANK_N)
-           and (hex3_n_o = C_SEG_BLANK_N)
-           and (hex2_n_o = C_SEG_BLANK_N)
-           and (hex1_n_o = C_SEG_BLANK_N)
-           and (hex0_n_o = C_SEG_BLANK_N)
-            report "FPGA2 seven-segment displays should clear once receive verification has recovered, even if the sensor state is error."
+        assert (hex5_n_o & hex4_n_o & hex3_n_o & hex2_n_o & hex1_n_o & hex0_n_o) = C_DISPLAY_GOOD
+            report "FPGA2 seven-segment displays should recover to GOOD once a clean frame is received again, even if the sensor value itself is in the error range."
             severity failure;
 
         wait for 30 ms;
-        assert leds_o = C_LED_NO_FRAME
-            report "FPGA2 LEDs should return to the no-frame pattern after the timeout interval expires."
+        assert leds_o = C_LEDS_OFF
+            report "FPGA2 LEDs should stay off after the timeout interval expires."
             severity failure;
-        assert (hex5_n_o = C_SEG_BLANK_N)
-           and (hex4_n_o = C_SEG_BLANK_N)
-           and (hex3_n_o = C_SEG_BLANK_N)
-           and (hex2_n_o = C_SEG_BLANK_N)
-           and (hex1_n_o = C_SEG_BLANK_N)
-           and (hex0_n_o = C_SEG_BLANK_N)
-            report "FPGA2 seven-segment displays should be blank again after the receive timeout state."
+        assert (hex5_n_o & hex4_n_o & hex3_n_o & hex2_n_o & hex1_n_o & hex0_n_o) = C_DISPLAY_NONE
+            report "FPGA2 seven-segment displays should return to NONE after the receive timeout state."
             severity failure;
 
         assert seen_hsync_edge = '1'

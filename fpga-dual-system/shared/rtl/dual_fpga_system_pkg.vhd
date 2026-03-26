@@ -13,6 +13,9 @@ package dual_fpga_system_pkg is
     constant C_SENSOR_NORMAL_MAX  : natural := 2500;
     constant C_SENSOR_WARNING_MAX : natural := 3200;
     constant C_SENSOR_MAX_CODE    : natural := 3600;
+    constant C_SENSOR_TEST_INVALID_CODE : natural := C_SENSOR_MAX_CODE + 1;
+    constant C_TEMPERATURE_MIN_C  : natural := 12;
+    constant C_TEMPERATURE_MAX_C  : natural := 36;
 
     constant C_FLAG_WARNING_BIT   : natural := 0;
     constant C_FLAG_ERROR_BIT     : natural := 1;

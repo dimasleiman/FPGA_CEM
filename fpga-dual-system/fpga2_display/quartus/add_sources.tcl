@@ -9,6 +9,7 @@ set_global_assignment -name TOP_LEVEL_ENTITY fpga2_top
 set_global_assignment -name VHDL_FILE [file join $project_dir shared rtl dual_fpga_system_pkg.vhd]
 set_global_assignment -name VHDL_FILE [file join $src_dir pkg fpga2_pkg.vhd]
 set_global_assignment -name VHDL_FILE [file join $src_dir link_rx uart_rx.vhd]
+set_global_assignment -name VHDL_FILE [file join $src_dir link_rx internal_uart_frame_gen.vhd]
 set_global_assignment -name VHDL_FILE [file join $src_dir link_rx frame_decoder.vhd]
 set_global_assignment -name VHDL_FILE [file join $src_dir control link_statistics.vhd]
 set_global_assignment -name VHDL_FILE [file join $src_dir control status_mapper.vhd]

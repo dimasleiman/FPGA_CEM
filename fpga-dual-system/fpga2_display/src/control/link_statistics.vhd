@@ -46,8 +46,6 @@ architecture rtl of link_statistics is
     signal inactivity_counter       : natural range 0 to G_TIMEOUT_CLKS - 1 := 0;
 begin
     process (clk)
-        variable local_range_ok : std_logic;
-        variable local_state    : t_sensor_state;
         variable missing_count  : unsigned(7 downto 0);
     begin
         if rising_edge(clk) then
@@ -87,33 +85,25 @@ begin
                     corrupted_frames_reg <= corrupted_frames_reg + 1;
                     comm_state_reg       <= C_COMM_STATE_DEGRADED;
                 elsif frame_valid_pulse = '1' then
-                    local_range_ok := sample_range_ok(measured_value);
-                    local_state    := classify_sample(measured_value, local_range_ok);
+                    valid_frames_reg         <= valid_frames_reg + 1;
+                    current_sensor_value_reg <= measured_value;
+                    current_sensor_state_reg <= tx_sensor_state;
 
-                    if (local_range_ok /= tx_range_ok) or (local_state /= tx_sensor_state) then
-                        corrupted_frames_reg <= corrupted_frames_reg + 1;
-                        comm_state_reg       <= C_COMM_STATE_DEGRADED;
-                    else
-                        valid_frames_reg         <= valid_frames_reg + 1;
-                        current_sensor_value_reg <= measured_value;
-                        current_sensor_state_reg <= local_state;
+                    if sequence_seen_reg = '1' then
+                        missing_count := missing_frame_count(expected_sequence_reg, sequence_value);
 
-                        if sequence_seen_reg = '1' then
-                            missing_count := missing_frame_count(expected_sequence_reg, sequence_value);
-
-                            if missing_count /= 0 then
-                                missing_frames_reg <= missing_frames_reg + resize(missing_count, C_COUNTER_WIDTH);
-                                comm_state_reg     <= C_COMM_STATE_DEGRADED;
-                            else
-                                comm_state_reg <= C_COMM_STATE_OK;
-                            end if;
+                        if missing_count /= 0 then
+                            missing_frames_reg <= missing_frames_reg + resize(missing_count, C_COUNTER_WIDTH);
+                            comm_state_reg     <= C_COMM_STATE_DEGRADED;
                         else
-                            sequence_seen_reg <= '1';
-                            comm_state_reg    <= C_COMM_STATE_OK;
+                            comm_state_reg <= C_COMM_STATE_OK;
                         end if;
-
-                        expected_sequence_reg <= next_sequence(sequence_value);
+                    else
+                        sequence_seen_reg <= '1';
+                        comm_state_reg    <= C_COMM_STATE_OK;
                     end if;
+
+                    expected_sequence_reg <= next_sequence(sequence_value);
                 end if;
             end if;
         end if;

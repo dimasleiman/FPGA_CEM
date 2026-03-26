@@ -35,5 +35,11 @@ set_global_assignment -name SDC_FILE de10_lite_fpga1_wrapper.sdc
 # set_location_assignment <LOCAL_ERROR_LED_PIN> -to local_error_led_o
 # set_instance_assignment -name IO_STANDARD "<LED_IO_STANDARD>" -to local_error_led_o
 
+# ledr1_o .. ledr9_o
+# Map these optional ports only if you want FPGA1 to drive LEDR1..LEDR9 at a
+# fixed inactive level on the DE10-Lite board.
+
+# No seven-segment outputs are exposed by FPGA1 anymore.
+
 # Optional wrapper generic override:
 # - Set G_RESET_ACTIVE_LEVEL after you choose the real board reset polarity.

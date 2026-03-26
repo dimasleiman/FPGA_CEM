@@ -19,16 +19,18 @@ La separation pratique par phases est la suivante :
 
 ## Chaine de traitement FPGA1
 
-Chaine reutilisable actuelle :
+Chaine coeur reutilisable actuelle :
 
-`fake_sensor_gen -> sample_normalizer -> sample_validator -> sample_classifier -> frame_builder -> uart_tx`
+`sample_source -> sample_normalizer -> sample_validator -> sample_classifier -> frame_builder -> uart_tx`
 
-Substitution prevue en phase 2 :
+Selection actuelle du `sample_source` au niveau wrapper FPGA1 :
 
-`max10_adc_frontend -> sample_normalizer -> sample_validator -> sample_classifier -> frame_builder -> uart_tx`
+- `fake_sensor_gen` pour un capteur factice analogique/temperature
+- une source de test fixe pour les simulations de bring-up
+- `max10_adc_frontend` pour l'acquisition ADC MAX 10 reelle
 
-Le bloc ADC n'est volontairement pas implemente a ce stade car les details
-exactes de l'IP/wrapper Quartus restent un travail manuel.
+Le coeur `fpga1_top` reste source-agnostique et consomme seulement
+`sample_value_i` / `sample_valid_i`.
 
 ## Chaine de traitement FPGA2
 

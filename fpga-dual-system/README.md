@@ -144,6 +144,35 @@ Non verifie dans cette mise a jour du depot :
 - integration ADC reelle du MAX 10
 - bring-up materiel carte-a-carte
 
+## Moniteur VGA requis
+
+La sortie video actuelle de FPGA2 vise le mode VGA standard DE10-Lite :
+
+- resolution visible `640x480`
+- frequence verticale `60 Hz`
+- horloge pixel `25 MHz`
+- `HSYNC` active a l'etat bas
+- `VSYNC` active a l'etat bas
+
+Pour l'affichage materiel, utiliser de preference :
+
+- un moniteur avec une vraie entree VGA analogique sur connecteur D-SUB 15
+- ou un convertisseur VGA-vers-HDMI actif si l'ecran ne possede pas d'entree
+  VGA
+
+Le moniteur doit accepter :
+
+- `640x480 @ 60 Hz`
+- un signal VGA analogique classique avec `HSYNC` / `VSYNC` separes
+
+Recommandations pratiques :
+
+- un ancien moniteur PC VGA ou un ecran LCD avec entree VGA a de fortes
+  chances de fonctionner
+- certains ecrans modernes peuvent etre plus stricts selon leur support VGA
+- eviter les cables passifs VGA-vers-HDMI, qui ne convertissent pas le signal
+  analogique
+
 ## Documents principaux
 
 - `docs/system_architecture.md`

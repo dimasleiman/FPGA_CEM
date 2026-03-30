@@ -1,5 +1,5 @@
 Flow report for de10_lite_fpga1_wrapper
-Fri Mar 27 09:45:51 2026
+Mon Mar 30 15:12:48 2026
 Quartus Prime Version 25.1std.0 Build 1129 10/21/2025 SC Standard Edition
 
 
@@ -41,24 +41,24 @@ on the Quartus Prime software download page.
 +------------------------------------------------------------------------------------------+
 ; Flow Summary                                                                             ;
 +------------------------------------+-----------------------------------------------------+
-; Flow Status                        ; Successful - Fri Mar 27 09:45:47 2026               ;
+; Flow Status                        ; Successful - Mon Mar 30 15:12:48 2026               ;
 ; Quartus Prime Version              ; 25.1std.0 Build 1129 10/21/2025 SC Standard Edition ;
 ; Revision Name                      ; de10_lite_fpga1_wrapper                             ;
 ; Top-level Entity Name              ; de10_lite_fpga1_wrapper                             ;
 ; Family                             ; MAX 10                                              ;
 ; Device                             ; 10M50DAF484C7G                                      ;
 ; Timing Models                      ; Final                                               ;
-; Total logic elements               ; 515 / 49,760 ( 1 % )                                ;
-;     Total combinational functions  ; 514 / 49,760 ( 1 % )                                ;
-;     Dedicated logic registers      ; 206 / 49,760 ( < 1 % )                              ;
-; Total registers                    ; 206                                                 ;
-; Total pins                         ; 55 / 360 ( 15 % )                                   ;
+; Total logic elements               ; 128                                                 ;
+;     Total combinational functions  ; 127                                                 ;
+;     Dedicated logic registers      ; 63                                                  ;
+; Total registers                    ; 63                                                  ;
+; Total pins                         ; 56                                                  ;
 ; Total virtual pins                 ; 0                                                   ;
-; Total memory bits                  ; 0 / 1,677,312 ( 0 % )                               ;
-; Embedded Multiplier 9-bit elements ; 0 / 288 ( 0 % )                                     ;
-; Total PLLs                         ; 0 / 4 ( 0 % )                                       ;
-; UFM blocks                         ; 0 / 1 ( 0 % )                                       ;
-; ADC blocks                         ; 0 / 2 ( 0 % )                                       ;
+; Total memory bits                  ; 0                                                   ;
+; Embedded Multiplier 9-bit elements ; 0                                                   ;
+; Total PLLs                         ; 0                                                   ;
+; UFM blocks                         ; 0                                                   ;
+; ADC blocks                         ; 0                                                   ;
 +------------------------------------+-----------------------------------------------------+
 
 
@@ -67,28 +67,21 @@ on the Quartus Prime software download page.
 +-------------------+-------------------------+
 ; Option            ; Setting                 ;
 +-------------------+-------------------------+
-; Start date & time ; 03/27/2026 09:45:22     ;
+; Start date & time ; 03/30/2026 15:12:37     ;
 ; Main task         ; Compilation             ;
 ; Revision Name     ; de10_lite_fpga1_wrapper ;
 +-------------------+-------------------------+
 
 
-+-------------------------------------------------------------------------------------------------------------------------+
-; Flow Non-Default Global Settings                                                                                        ;
-+-------------------------------------+----------------------------------------+---------------+-------------+------------+
-; Assignment Name                     ; Value                                  ; Default Value ; Entity Name ; Section Id ;
-+-------------------------------------+----------------------------------------+---------------+-------------+------------+
-; COMPILER_SIGNATURE_ID               ; 10995770589232.177460112212836         ; --            ; --          ; --         ;
-; MAX_CORE_JUNCTION_TEMP              ; 85                                     ; --            ; --          ; --         ;
-; MIN_CORE_JUNCTION_TEMP              ; 0                                      ; --            ; --          ; --         ;
-; PARTITION_COLOR                     ; -- (Not supported for targeted family) ; --            ; --          ; Top        ;
-; PARTITION_FITTER_PRESERVATION_LEVEL ; -- (Not supported for targeted family) ; --            ; --          ; Top        ;
-; PARTITION_NETLIST_TYPE              ; -- (Not supported for targeted family) ; --            ; --          ; Top        ;
-; POWER_BOARD_THERMAL_MODEL           ; None (CONSERVATIVE)                    ; --            ; --          ; --         ;
-; POWER_PRESET_COOLING_SOLUTION       ; 23 MM HEAT SINK WITH 200 LFPM AIRFLOW  ; --            ; --          ; --         ;
-; PROJECT_OUTPUT_DIRECTORY            ; output_files                           ; --            ; --          ; --         ;
-; VHDL_INPUT_VERSION                  ; VHDL_2008                              ; VHDL_1993     ; --          ; --         ;
-+-------------------------------------+----------------------------------------+---------------+-------------+------------+
++------------------------------------------------------------------------------------------------------+
+; Flow Non-Default Global Settings                                                                     ;
++--------------------------+--------------------------------+---------------+-------------+------------+
+; Assignment Name          ; Value                          ; Default Value ; Entity Name ; Section Id ;
++--------------------------+--------------------------------+---------------+-------------+------------+
+; COMPILER_SIGNATURE_ID    ; 10995770589232.177487635725856 ; --            ; --          ; --         ;
+; PROJECT_OUTPUT_DIRECTORY ; output_files                   ; --            ; --          ; --         ;
+; VHDL_INPUT_VERSION       ; VHDL_2008                      ; VHDL_1993     ; --          ; --         ;
++--------------------------+--------------------------------+---------------+-------------+------------+
 
 
 +--------------------------------------------------------------------------------------------------------------------------+
@@ -96,11 +89,8 @@ on the Quartus Prime software download page.
 +----------------------+--------------+-------------------------+---------------------+------------------------------------+
 ; Module Name          ; Elapsed Time ; Average Processors Used ; Peak Virtual Memory ; Total CPU Time (on all processors) ;
 +----------------------+--------------+-------------------------+---------------------+------------------------------------+
-; Analysis & Synthesis ; 00:00:12     ; 1.0                     ; 4951 MB             ; 00:00:17                           ;
-; Fitter               ; 00:00:10     ; 1.1                     ; 6192 MB             ; 00:00:11                           ;
-; Assembler            ; 00:00:02     ; 1.0                     ; 4844 MB             ; 00:00:02                           ;
-; Timing Analyzer      ; 00:00:03     ; 1.2                     ; 4965 MB             ; 00:00:02                           ;
-; Total                ; 00:00:27     ; --                      ; --                  ; 00:00:32                           ;
+; Analysis & Synthesis ; 00:00:11     ; 1.0                     ; 4935 MB             ; 00:00:16                           ;
+; Total                ; 00:00:11     ; --                      ; --                  ; 00:00:16                           ;
 +----------------------+--------------+-------------------------+---------------------+------------------------------------+
 
 
@@ -110,9 +100,6 @@ on the Quartus Prime software download page.
 ; Module Name          ; Machine Hostname ; OS Name    ; OS Version ; Processor type ;
 +----------------------+------------------+------------+------------+----------------+
 ; Analysis & Synthesis ; DESKTOP-OT6F2AF  ; Windows 10 ; 10.0       ; x86_64         ;
-; Fitter               ; DESKTOP-OT6F2AF  ; Windows 10 ; 10.0       ; x86_64         ;
-; Assembler            ; DESKTOP-OT6F2AF  ; Windows 10 ; 10.0       ; x86_64         ;
-; Timing Analyzer      ; DESKTOP-OT6F2AF  ; Windows 10 ; 10.0       ; x86_64         ;
 +----------------------+------------------+------------+------------+----------------+
 
 
@@ -120,9 +107,6 @@ on the Quartus Prime software download page.
 ; Flow Log ;
 ------------
 quartus_map --read_settings_files=on --write_settings_files=off de10_lite_fpga1_wrapper -c de10_lite_fpga1_wrapper
-quartus_fit --read_settings_files=off --write_settings_files=off de10_lite_fpga1_wrapper -c de10_lite_fpga1_wrapper
-quartus_asm --read_settings_files=off --write_settings_files=off de10_lite_fpga1_wrapper -c de10_lite_fpga1_wrapper
-quartus_sta de10_lite_fpga1_wrapper -c de10_lite_fpga1_wrapper
 
 
 

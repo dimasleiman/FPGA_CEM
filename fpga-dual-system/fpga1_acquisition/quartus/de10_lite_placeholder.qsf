@@ -2,44 +2,8 @@ set_global_assignment -name FAMILY "MAX 10"
 set_global_assignment -name DEVICE 10M50DAF484C7G
 set_global_assignment -name VHDL_INPUT_VERSION VHDL_2008
 set_global_assignment -name TOP_LEVEL_ENTITY de10_lite_fpga1_wrapper
+set_global_assignment -name PROJECT_OUTPUT_DIRECTORY output_files
 set_global_assignment -name SDC_FILE de10_lite_fpga1_wrapper.sdc
 
-# Placeholder only.
-# Replace the commented templates below with the actual DE10-Lite pin locations
-# and I/O standards you choose in Quartus.
-#
-# Current repository scope for FPGA1:
-# - onboard 50 MHz clock
-# - external reset source
-# - board-to-board UART transmit
-# - fake sensor source in phase 1
-#
-# Phase 2 note:
-# - MAX 10 integrated ADC acquisition is not wired in this placeholder yet.
-# - Add the required ADC IP/signals only when the board-level integration work is
-#   actually implemented and verified.
-
-# clock_50_i
-# set_location_assignment <CLOCK_50_PIN> -to clock_50_i
-# set_instance_assignment -name IO_STANDARD "<CLOCK_IO_STANDARD>" -to clock_50_i
-
-# reset_source_i
-# set_location_assignment <RESET_SOURCE_PIN> -to reset_source_i
-# set_instance_assignment -name IO_STANDARD "<RESET_IO_STANDARD>" -to reset_source_i
-
-# uart_tx_o
-# set_location_assignment <UART_TX_PIN> -to uart_tx_o
-# set_instance_assignment -name IO_STANDARD "<UART_TX_IO_STANDARD>" -to uart_tx_o
-
-# local_error_led_o
-# set_location_assignment <LOCAL_ERROR_LED_PIN> -to local_error_led_o
-# set_instance_assignment -name IO_STANDARD "<LED_IO_STANDARD>" -to local_error_led_o
-
-# ledr1_o .. ledr9_o
-# Map these optional ports only if you want FPGA1 to drive LEDR1..LEDR9 at a
-# fixed inactive level on the DE10-Lite board.
-
-# No seven-segment outputs are exposed by FPGA1 anymore.
-
-# Optional wrapper generic override:
-# - Set G_RESET_ACTIVE_LEVEL after you choose the real board reset polarity.
+# Fill in the DE10-Lite board assignments below if you create a fresh project.
+# This repository keeps a fully populated wrapper QSF in the same directory.

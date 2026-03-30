@@ -7,49 +7,23 @@ set_global_assignment -name SDC_FILE de10_lite_fpga2_wrapper.sdc
 
 set_global_assignment -name VHDL_FILE ../../shared/rtl/dual_fpga_system_pkg.vhd
 set_global_assignment -name VHDL_FILE ../../board/de10_lite/common/reset_sync.vhd
-set_global_assignment -name VHDL_FILE ../../fpga2_display/src/pkg/fpga2_pkg.vhd
 set_global_assignment -name VHDL_FILE ../../fpga2_display/src/link_rx/uart_rx.vhd
-set_global_assignment -name VHDL_FILE ../../fpga2_display/src/link_rx/internal_uart_frame_gen.vhd
-set_global_assignment -name VHDL_FILE ../../fpga2_display/src/link_rx/frame_decoder.vhd
-set_global_assignment -name VHDL_FILE ../../fpga2_display/src/control/link_statistics.vhd
-set_global_assignment -name VHDL_FILE ../../fpga2_display/src/control/status_mapper.vhd
-set_global_assignment -name VHDL_FILE ../../fpga2_display/src/display/led_driver.vhd
-set_global_assignment -name VHDL_FILE ../../fpga2_display/src/display/vga_timing.vhd
-set_global_assignment -name VHDL_FILE ../../fpga2_display/src/display/vga_dashboard.vhd
 set_global_assignment -name VHDL_FILE ../../fpga2_display/src/top/fpga2_top.vhd
 set_global_assignment -name VHDL_FILE ../../board/de10_lite/fpga2/de10_lite_fpga2_wrapper.vhd
 
-# Keep every DE10-Lite red LED driven inactive on FPGA2.
 set_location_assignment PIN_P11 -to clock_50_i
 set_location_assignment PIN_B8 -to reset_source_i
-# Receive FPGA1 UART on JP1 pin 1 / GPIO_[0].
 set_location_assignment PIN_V10 -to uart_rx_i
-set_location_assignment PIN_A8 -to ledr0_o
-set_location_assignment PIN_A9 -to ledr1_o
-set_location_assignment PIN_A10 -to ledr2_o
-set_location_assignment PIN_B10 -to ledr3_o
-set_location_assignment PIN_D13 -to ledr4_o
-set_location_assignment PIN_C13 -to ledr5_o
-set_location_assignment PIN_E14 -to ledr6_o
-set_location_assignment PIN_D14 -to ledr7_o
-set_location_assignment PIN_A11 -to ledr8_o
-set_location_assignment PIN_B11 -to ledr9_o
-set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to ledr0_o
-set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to ledr1_o
-set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to ledr2_o
-set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to ledr3_o
-set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to ledr4_o
-set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to ledr5_o
-set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to ledr6_o
-set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to ledr7_o
-set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to ledr8_o
-set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to ledr9_o
-set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to clock_50_i
-set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to reset_source_i
-set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to uart_rx_i
-
-# Drive the six DE10-Lite seven-segment displays with the FPGA2 GOOD/ERROR
-# status word. Outputs are active-low and use indices [0]=segment0 .. [6]=segment6.
+set_location_assignment PIN_A8 -to ledr_o[0]
+set_location_assignment PIN_A9 -to ledr_o[1]
+set_location_assignment PIN_A10 -to ledr_o[2]
+set_location_assignment PIN_B10 -to ledr_o[3]
+set_location_assignment PIN_D13 -to ledr_o[4]
+set_location_assignment PIN_C13 -to ledr_o[5]
+set_location_assignment PIN_E14 -to ledr_o[6]
+set_location_assignment PIN_D14 -to ledr_o[7]
+set_location_assignment PIN_A11 -to ledr_o[8]
+set_location_assignment PIN_B11 -to ledr_o[9]
 set_location_assignment PIN_J20 -to hex5_n_o[0]
 set_location_assignment PIN_K20 -to hex5_n_o[1]
 set_location_assignment PIN_L18 -to hex5_n_o[2]
@@ -92,44 +66,14 @@ set_location_assignment PIN_C16 -to hex0_n_o[3]
 set_location_assignment PIN_E16 -to hex0_n_o[4]
 set_location_assignment PIN_D17 -to hex0_n_o[5]
 set_location_assignment PIN_C17 -to hex0_n_o[6]
+
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to clock_50_i
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to reset_source_i
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to uart_rx_i
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to ledr_o
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to hex5_n_o
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to hex4_n_o
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to hex3_n_o
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to hex2_n_o
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to hex1_n_o
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to hex0_n_o
-
-# Drive the DE10-Lite VGA connector directly from FPGA2. The VGA timing core
-# uses a 25 MHz pixel enable derived from the 50 MHz board clock to target the
-# standard 640x480@60 Hz mode.
-set_location_assignment PIN_AA1 -to vga_r_o[0]
-set_location_assignment PIN_V1 -to vga_r_o[1]
-set_location_assignment PIN_Y2 -to vga_r_o[2]
-set_location_assignment PIN_Y1 -to vga_r_o[3]
-set_location_assignment PIN_W1 -to vga_g_o[0]
-set_location_assignment PIN_T2 -to vga_g_o[1]
-set_location_assignment PIN_R2 -to vga_g_o[2]
-set_location_assignment PIN_R1 -to vga_g_o[3]
-set_location_assignment PIN_P1 -to vga_b_o[0]
-set_location_assignment PIN_T1 -to vga_b_o[1]
-set_location_assignment PIN_P4 -to vga_b_o[2]
-set_location_assignment PIN_N2 -to vga_b_o[3]
-set_location_assignment PIN_N3 -to vga_hsync_o
-set_location_assignment PIN_N1 -to vga_vsync_o
-set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to vga_r_o
-set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to vga_g_o
-set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to vga_b_o
-set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to vga_hsync_o
-set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to vga_vsync_o
-
-set_global_assignment -name LAST_QUARTUS_VERSION "25.1std.0 Standard Edition"
-set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top
-set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -section_id Top
-set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top
-
-
-
-
-
-
-set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top

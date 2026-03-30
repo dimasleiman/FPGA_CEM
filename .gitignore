@@ -3,6 +3,10 @@
 .vscode/
 *.code-workspace
 
+# Python cache
+__pycache__/
+*.pyc
+
 # OS-generated files
 Thumbs.db
 Desktop.ini

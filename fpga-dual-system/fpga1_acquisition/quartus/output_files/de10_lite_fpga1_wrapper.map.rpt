@@ -1,5 +1,5 @@
 Analysis & Synthesis report for de10_lite_fpga1_wrapper
-Mon Mar 30 15:12:48 2026
+Thu Apr 23 09:59:05 2026
 Quartus Prime Version 25.1std.0 Build 1129 10/21/2025 SC Standard Edition
 
 
@@ -51,16 +51,16 @@ on the Quartus Prime software download page.
 +------------------------------------------------------------------------------------------+
 ; Analysis & Synthesis Summary                                                             ;
 +------------------------------------+-----------------------------------------------------+
-; Analysis & Synthesis Status        ; Successful - Mon Mar 30 15:12:48 2026               ;
+; Analysis & Synthesis Status        ; Successful - Thu Apr 23 09:59:05 2026               ;
 ; Quartus Prime Version              ; 25.1std.0 Build 1129 10/21/2025 SC Standard Edition ;
 ; Revision Name                      ; de10_lite_fpga1_wrapper                             ;
 ; Top-level Entity Name              ; de10_lite_fpga1_wrapper                             ;
 ; Family                             ; MAX 10                                              ;
-; Total logic elements               ; 128                                                 ;
-;     Total combinational functions  ; 127                                                 ;
-;     Dedicated logic registers      ; 63                                                  ;
-; Total registers                    ; 63                                                  ;
-; Total pins                         ; 56                                                  ;
+; Total logic elements               ; 203                                                 ;
+;     Total combinational functions  ; 202                                                 ;
+;     Dedicated logic registers      ; 106                                                 ;
+; Total registers                    ; 106                                                 ;
+; Total pins                         ; 57                                                  ;
 ; Total virtual pins                 ; 0                                                   ;
 ; Total memory bits                  ; 0                                                   ;
 ; Embedded Multiplier 9-bit elements ; 0                                                   ;
@@ -191,30 +191,30 @@ on the Quartus Prime software download page.
 +---------------------------------------------+------------------+
 ; Resource                                    ; Usage            ;
 +---------------------------------------------+------------------+
-; Estimated Total logic elements              ; 128              ;
+; Estimated Total logic elements              ; 203              ;
 ;                                             ;                  ;
-; Total combinational functions               ; 127              ;
+; Total combinational functions               ; 202              ;
 ; Logic element usage by number of LUT inputs ;                  ;
-;     -- 4 input functions                    ; 47               ;
-;     -- 3 input functions                    ; 23               ;
-;     -- <=2 input functions                  ; 57               ;
+;     -- 4 input functions                    ; 75               ;
+;     -- 3 input functions                    ; 34               ;
+;     -- <=2 input functions                  ; 93               ;
 ;                                             ;                  ;
 ; Logic elements by mode                      ;                  ;
-;     -- normal mode                          ; 104              ;
-;     -- arithmetic mode                      ; 23               ;
+;     -- normal mode                          ; 149              ;
+;     -- arithmetic mode                      ; 53               ;
 ;                                             ;                  ;
-; Total registers                             ; 63               ;
-;     -- Dedicated logic registers            ; 63               ;
+; Total registers                             ; 106              ;
+;     -- Dedicated logic registers            ; 106              ;
 ;     -- I/O registers                        ; 0                ;
 ;                                             ;                  ;
-; I/O pins                                    ; 56               ;
+; I/O pins                                    ; 57               ;
 ;                                             ;                  ;
 ; Embedded Multiplier 9-bit elements          ; 0                ;
 ;                                             ;                  ;
 ; Maximum fan-out node                        ; clock_50_i~input ;
-; Maximum fan-out                             ; 63               ;
-; Total fan-out                               ; 618              ;
-; Average fan-out                             ; 2.05             ;
+; Maximum fan-out                             ; 106              ;
+; Total fan-out                               ; 984              ;
+; Average fan-out                             ; 2.33             ;
 +---------------------------------------------+------------------+
 
 
@@ -223,8 +223,8 @@ on the Quartus Prime software download page.
 +------------------------------+---------------------+---------------------------+-------------+------------+--------------+---------+-----------+------+--------------+------------+-------------------------------------------------------------+-------------------------+--------------+
 ; Compilation Hierarchy Node   ; Combinational ALUTs ; Dedicated Logic Registers ; Memory Bits ; UFM Blocks ; DSP Elements ; DSP 9x9 ; DSP 18x18 ; Pins ; Virtual Pins ; ADC blocks ; Full Hierarchy Name                                         ; Entity Name             ; Library Name ;
 +------------------------------+---------------------+---------------------------+-------------+------------+--------------+---------+-----------+------+--------------+------------+-------------------------------------------------------------+-------------------------+--------------+
-; |de10_lite_fpga1_wrapper     ; 127 (4)             ; 63 (4)                    ; 0           ; 0          ; 0            ; 0       ; 0         ; 56   ; 0            ; 0          ; |de10_lite_fpga1_wrapper                                    ; de10_lite_fpga1_wrapper ; work         ;
-;    |fpga1_top:u_core|        ; 122 (60)            ; 57 (31)                   ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |de10_lite_fpga1_wrapper|fpga1_top:u_core                   ; fpga1_top               ; work         ;
+; |de10_lite_fpga1_wrapper     ; 202 (41)            ; 106 (26)                  ; 0           ; 0          ; 0            ; 0       ; 0         ; 57   ; 0            ; 0          ; |de10_lite_fpga1_wrapper                                    ; de10_lite_fpga1_wrapper ; work         ;
+;    |fpga1_top:u_core|        ; 160 (98)            ; 78 (52)                   ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |de10_lite_fpga1_wrapper|fpga1_top:u_core                   ; fpga1_top               ; work         ;
 ;       |uart_tx:u_uart_tx|    ; 62 (62)             ; 26 (26)                   ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |de10_lite_fpga1_wrapper|fpga1_top:u_core|uart_tx:u_uart_tx ; uart_tx                 ; work         ;
 ;    |reset_sync:u_reset_sync| ; 1 (1)               ; 2 (2)                     ; 0           ; 0          ; 0            ; 0       ; 0         ; 0    ; 0            ; 0          ; |de10_lite_fpga1_wrapper|reset_sync:u_reset_sync            ; reset_sync              ; work         ;
 +------------------------------+---------------------+---------------------------+-------------+------------+--------------+---------+-----------+------+--------------+------------+-------------------------------------------------------------+-------------------------+--------------+
@@ -232,17 +232,19 @@ Note: For table entries with two numbers listed, the numbers in parentheses indi
 
 
 Encoding Type:  One-Hot
-+-------------------------------------------------------------------------------------------------------------------------------+
-; State Machine - |de10_lite_fpga1_wrapper|fpga1_top:u_core|state                                                               ;
-+-----------------------+-----------------------+-----------------------+-------------------+-------------------+---------------+
-; Name                  ; state.ST_WAIT_TX_DONE ; state.ST_WAIT_TX_BUSY ; state.ST_START_TX ; state.ST_WAIT_GAP ; state.ST_IDLE ;
-+-----------------------+-----------------------+-----------------------+-------------------+-------------------+---------------+
-; state.ST_IDLE         ; 0                     ; 0                     ; 0                 ; 0                 ; 0             ;
-; state.ST_WAIT_GAP     ; 0                     ; 0                     ; 0                 ; 1                 ; 1             ;
-; state.ST_START_TX     ; 0                     ; 0                     ; 1                 ; 0                 ; 1             ;
-; state.ST_WAIT_TX_BUSY ; 0                     ; 1                     ; 0                 ; 0                 ; 1             ;
-; state.ST_WAIT_TX_DONE ; 1                     ; 0                     ; 0                 ; 0                 ; 1             ;
-+-----------------------+-----------------------+-----------------------+-------------------+-------------------+---------------+
++----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; State Machine - |de10_lite_fpga1_wrapper|fpga1_top:u_core|state                                                                                                                  ;
++------------------------+------------------------+------------------------+-----------------------+-----------------------+-------------------+-------------------+---------------+
+; Name                   ; state.ST_RESTART_DELAY ; state.ST_RESTART_PULSE ; state.ST_WAIT_TX_DONE ; state.ST_WAIT_TX_BUSY ; state.ST_START_TX ; state.ST_WAIT_GAP ; state.ST_IDLE ;
++------------------------+------------------------+------------------------+-----------------------+-----------------------+-------------------+-------------------+---------------+
+; state.ST_IDLE          ; 0                      ; 0                      ; 0                     ; 0                     ; 0                 ; 0                 ; 0             ;
+; state.ST_WAIT_GAP      ; 0                      ; 0                      ; 0                     ; 0                     ; 0                 ; 1                 ; 1             ;
+; state.ST_START_TX      ; 0                      ; 0                      ; 0                     ; 0                     ; 1                 ; 0                 ; 1             ;
+; state.ST_WAIT_TX_BUSY  ; 0                      ; 0                      ; 0                     ; 1                     ; 0                 ; 0                 ; 1             ;
+; state.ST_WAIT_TX_DONE  ; 0                      ; 0                      ; 1                     ; 0                     ; 0                 ; 0                 ; 1             ;
+; state.ST_RESTART_PULSE ; 0                      ; 1                      ; 0                     ; 0                     ; 0                 ; 0                 ; 1             ;
+; state.ST_RESTART_DELAY ; 1                      ; 0                      ; 0                     ; 0                     ; 0                 ; 0                 ; 1             ;
++------------------------+------------------------+------------------------+-----------------------+-----------------------+-------------------+-------------------+---------------+
 
 
 Encoding Type:  One-Hot
@@ -263,12 +265,12 @@ Encoding Type:  One-Hot
 +----------------------------------------------+-------+
 ; Statistic                                    ; Value ;
 +----------------------------------------------+-------+
-; Total registers                              ; 63    ;
-; Number of registers using Synchronous Clear  ; 29    ;
+; Total registers                              ; 106   ;
+; Number of registers using Synchronous Clear  ; 64    ;
 ; Number of registers using Synchronous Load   ; 0     ;
 ; Number of registers using Asynchronous Clear ; 0     ;
 ; Number of registers using Asynchronous Load  ; 0     ;
-; Number of registers using Clock Enable       ; 28    ;
+; Number of registers using Clock Enable       ; 66    ;
 ; Number of registers using Preset             ; 0     ;
 +----------------------------------------------+-------+
 
@@ -279,9 +281,9 @@ Encoding Type:  One-Hot
 ; Inverted Register                         ; Fan out ;
 +-------------------------------------------+---------+
 ; fpga1_top:u_core|uart_tx:u_uart_tx|tx_reg ; 2       ;
-; reset_sync:u_reset_sync|reset_pipe[0]     ; 59      ;
-; reset_sync:u_reset_sync|reset_pipe[1]     ; 1       ;
+; reset_sync:u_reset_sync|reset_pipe[0]     ; 72      ;
 ; start_button_sync                         ; 2       ;
+; reset_sync:u_reset_sync|reset_pipe[1]     ; 1       ;
 ; start_button_meta                         ; 1       ;
 ; Total number of inverted registers = 5    ;         ;
 +-------------------------------------------+---------+
@@ -292,27 +294,35 @@ Encoding Type:  One-Hot
 +--------------------+-----------+---------------+----------------------+------------------------+------------+--------------------------------------------------------------------------+
 ; Multiplexer Inputs ; Bus Width ; Baseline Area ; Area if Restructured ; Saving if Restructured ; Registered ; Example Multiplexer Output                                               ;
 +--------------------+-----------+---------------+----------------------+------------------------+------------+--------------------------------------------------------------------------+
-; 3:1                ; 8 bits    ; 16 LEs        ; 8 LEs                ; 8 LEs                  ; Yes        ; |de10_lite_fpga1_wrapper|fpga1_top:u_core|uart_data[6]                   ;
-; 3:1                ; 8 bits    ; 16 LEs        ; 8 LEs                ; 8 LEs                  ; Yes        ; |de10_lite_fpga1_wrapper|fpga1_top:u_core|uart_tx:u_uart_tx|shift_reg[3] ;
-; 7:1                ; 9 bits    ; 36 LEs        ; 9 LEs                ; 27 LEs                 ; Yes        ; |de10_lite_fpga1_wrapper|fpga1_top:u_core|byte_gap_counter[2]            ;
-; 7:1                ; 3 bits    ; 12 LEs        ; 3 LEs                ; 9 LEs                  ; Yes        ; |de10_lite_fpga1_wrapper|fpga1_top:u_core|uart_tx:u_uart_tx|bit_index[2] ;
+; 3:1                ; 8 bits    ; 16 LEs        ; 8 LEs                ; 8 LEs                  ; Yes        ; |de10_lite_fpga1_wrapper|fpga1_top:u_core|uart_data[1]                   ;
+; 3:1                ; 8 bits    ; 16 LEs        ; 8 LEs                ; 8 LEs                  ; Yes        ; |de10_lite_fpga1_wrapper|fpga1_top:u_core|uart_tx:u_uart_tx|shift_reg[0] ;
+; 5:1                ; 4 bits    ; 12 LEs        ; 4 LEs                ; 8 LEs                  ; Yes        ; |de10_lite_fpga1_wrapper|sync_pulse_counter[2]                           ;
+; 5:1                ; 16 bits   ; 48 LEs        ; 16 LEs               ; 32 LEs                 ; Yes        ; |de10_lite_fpga1_wrapper|start_delay_counter[0]                          ;
+; 6:1                ; 2 bits    ; 8 LEs         ; 2 LEs                ; 6 LEs                  ; Yes        ; |de10_lite_fpga1_wrapper|fpga1_top:u_core|restart_pulse_counter[1]       ;
+; 6:1                ; 16 bits   ; 64 LEs        ; 16 LEs               ; 48 LEs                 ; Yes        ; |de10_lite_fpga1_wrapper|fpga1_top:u_core|restart_delay_counter[5]       ;
+; 7:1                ; 3 bits    ; 12 LEs        ; 3 LEs                ; 9 LEs                  ; Yes        ; |de10_lite_fpga1_wrapper|fpga1_top:u_core|uart_tx:u_uart_tx|bit_index[1] ;
+; 9:1                ; 9 bits    ; 54 LEs        ; 9 LEs                ; 45 LEs                 ; Yes        ; |de10_lite_fpga1_wrapper|fpga1_top:u_core|byte_gap_counter[2]            ;
+; 3:1                ; 8 bits    ; 16 LEs        ; 16 LEs               ; 0 LEs                  ; No         ; |de10_lite_fpga1_wrapper|fpga1_top:u_core|counter_reg                    ;
 ; 7:1                ; 2 bits    ; 8 LEs         ; 6 LEs                ; 2 LEs                  ; No         ; |de10_lite_fpga1_wrapper|fpga1_top:u_core|uart_tx:u_uart_tx|state        ;
 ; 9:1                ; 2 bits    ; 12 LEs        ; 6 LEs                ; 6 LEs                  ; No         ; |de10_lite_fpga1_wrapper|fpga1_top:u_core|uart_tx:u_uart_tx|state        ;
-; 10:1               ; 3 bits    ; 18 LEs        ; 12 LEs               ; 6 LEs                  ; No         ; |de10_lite_fpga1_wrapper|fpga1_top:u_core|state                          ;
-; 10:1               ; 2 bits    ; 12 LEs        ; 8 LEs                ; 4 LEs                  ; No         ; |de10_lite_fpga1_wrapper|fpga1_top:u_core|state                          ;
+; 14:1               ; 5 bits    ; 45 LEs        ; 20 LEs               ; 25 LEs                 ; No         ; |de10_lite_fpga1_wrapper|fpga1_top:u_core|state                          ;
+; 14:1               ; 2 bits    ; 18 LEs        ; 8 LEs                ; 10 LEs                 ; No         ; |de10_lite_fpga1_wrapper|fpga1_top:u_core|state                          ;
 +--------------------+-----------+---------------+----------------------+------------------------+------------+--------------------------------------------------------------------------+
 
 
 +-----------------------------------------------------------------------------------------+
 ; Parameter Settings for User Entity Instance: Top-level Entity: |de10_lite_fpga1_wrapper ;
-+-----------------------------+----------+------------------------------------------------+
-; Parameter Name              ; Value    ; Type                                           ;
-+-----------------------------+----------+------------------------------------------------+
-; G_CLOCK_FREQ_HZ             ; 50000000 ; Signed Integer                                 ;
-; G_BAUD_RATE                 ; 115200   ; Signed Integer                                 ;
-; G_RESET_ACTIVE_LEVEL        ; '0'      ; Enumerated                                     ;
-; G_START_BUTTON_ACTIVE_LEVEL ; '0'      ; Enumerated                                     ;
-+-----------------------------+----------+------------------------------------------------+
++-------------------------------+----------+----------------------------------------------+
+; Parameter Name                ; Value    ; Type                                         ;
++-------------------------------+----------+----------------------------------------------+
+; G_CLOCK_FREQ_HZ               ; 50000000 ; Signed Integer                               ;
+; G_BAUD_RATE                   ; 115200   ; Signed Integer                               ;
+; G_RESET_ACTIVE_LEVEL          ; '0'      ; Enumerated                                   ;
+; G_START_BUTTON_ACTIVE_LEVEL   ; '0'      ; Enumerated                                   ;
+; G_SYNC_PULSE_CLKS             ; 16       ; Signed Integer                               ;
+; G_AUTO_RESTART_PULSE_CLKS     ; 4        ; Signed Integer                               ;
+; G_START_AFTER_SYNC_DELAY_CLKS ; 50000    ; Signed Integer                               ;
++-------------------------------+----------+----------------------------------------------+
 Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
 
 
@@ -329,12 +339,14 @@ Note: In order to hide this table in the UI and the text report file, please set
 
 +---------------------------------------------------------------+
 ; Parameter Settings for User Entity Instance: fpga1_top:u_core ;
-+-----------------+----------+----------------------------------+
-; Parameter Name  ; Value    ; Type                             ;
-+-----------------+----------+----------------------------------+
-; g_clock_freq_hz ; 50000000 ; Signed Integer                   ;
-; g_baud_rate     ; 115200   ; Signed Integer                   ;
-+-----------------+----------+----------------------------------+
++----------------------+----------+-----------------------------+
+; Parameter Name       ; Value    ; Type                        ;
++----------------------+----------+-----------------------------+
+; g_clock_freq_hz      ; 50000000 ; Signed Integer              ;
+; g_baud_rate          ; 115200   ; Signed Integer              ;
+; g_restart_pulse_clks ; 4        ; Signed Integer              ;
+; g_restart_delay_clks ; 50000    ; Signed Integer              ;
++----------------------+----------+-----------------------------+
 Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
 
 
@@ -354,25 +366,25 @@ Note: In order to hide this table in the UI and the text report file, please set
 +-----------------------+-----------------------------+
 ; Type                  ; Count                       ;
 +-----------------------+-----------------------------+
-; boundary_port         ; 56                          ;
-; cycloneiii_ff         ; 63                          ;
-;     ENA               ; 19                          ;
-;     ENA SCLR          ; 9                           ;
-;     SCLR              ; 20                          ;
-;     plain             ; 15                          ;
-; cycloneiii_lcell_comb ; 129                         ;
-;     arith             ; 23                          ;
-;         2 data inputs ; 22                          ;
+; boundary_port         ; 57                          ;
+; cycloneiii_ff         ; 106                         ;
+;     ENA               ; 25                          ;
+;     ENA SCLR          ; 41                          ;
+;     SCLR              ; 23                          ;
+;     plain             ; 17                          ;
+; cycloneiii_lcell_comb ; 205                         ;
+;     arith             ; 53                          ;
+;         2 data inputs ; 52                          ;
 ;         3 data inputs ; 1                           ;
-;     normal            ; 106                         ;
-;         0 data inputs ; 1                           ;
-;         1 data inputs ; 4                           ;
-;         2 data inputs ; 32                          ;
-;         3 data inputs ; 22                          ;
-;         4 data inputs ; 47                          ;
+;     normal            ; 152                         ;
+;         0 data inputs ; 2                           ;
+;         1 data inputs ; 6                           ;
+;         2 data inputs ; 36                          ;
+;         3 data inputs ; 33                          ;
+;         4 data inputs ; 75                          ;
 ;                       ;                             ;
-; Max LUT depth         ; 7.00                        ;
-; Average LUT depth     ; 3.28                        ;
+; Max LUT depth         ; 6.00                        ;
+; Average LUT depth     ; 3.21                        ;
 +-----------------------+-----------------------------+
 
 
@@ -381,7 +393,7 @@ Note: In order to hide this table in the UI and the text report file, please set
 +----------------+--------------+
 ; Partition Name ; Elapsed Time ;
 +----------------+--------------+
-; Top            ; 00:00:00     ;
+; Top            ; 00:00:01     ;
 +----------------+--------------+
 
 
@@ -391,21 +403,7 @@ Note: In order to hide this table in the UI and the text report file, please set
 Info: *******************************************************************
 Info: Running Quartus Prime Analysis & Synthesis
     Info: Version 25.1std.0 Build 1129 10/21/2025 SC Standard Edition
-    Info: Copyright (C) 2025  Altera Corporation. All rights reserved.
-    Info: Your use of Altera Corporation's design tools, logic functions 
-    Info: and other software and tools, and any partner logic 
-    Info: functions, and any output files from any of the foregoing 
-    Info: (including device programming or simulation files), and any 
-    Info: associated documentation or information are expressly subject 
-    Info: to the terms and conditions of the Altera Program License 
-    Info: Subscription Agreement, the Altera Quartus Prime License Agreement,
-    Info: the Altera IP License Agreement, or other applicable license
-    Info: agreement, including, without limitation, that your use is for
-    Info: the sole purpose of programming logic devices manufactured by
-    Info: Altera and sold by Altera or its authorized distributors.  Please
-    Info: refer to the Altera Software License Subscription Agreements 
-    Info: on the Quartus Prime software download page.
-    Info: Processing started: Mon Mar 30 15:12:37 2026
+    Info: Processing started: Thu Apr 23 09:58:57 2026
 Info: Command: quartus_map --read_settings_files=on --write_settings_files=off de10_lite_fpga1_wrapper -c de10_lite_fpga1_wrapper
 Warning (18236): Number of processors has not been specified which may cause overloading on shared machines.  Set the global assignment NUM_PARALLEL_PROCESSORS in your QSF to an appropriate value for best performance.
 Info (20030): Parallel compilation is enabled and will use 10 of the 10 processors detected
@@ -413,81 +411,91 @@ Info (12021): Found 2 design units, including 0 entities, in source file /source
     Info (12022): Found design unit 1: dual_fpga_system_pkg File: F:/Sources/FPGA_CEM/fpga-dual-system/shared/rtl/dual_fpga_system_pkg.vhd Line: 5
     Info (12022): Found design unit 2: dual_fpga_system_pkg-body File: F:/Sources/FPGA_CEM/fpga-dual-system/shared/rtl/dual_fpga_system_pkg.vhd Line: 16
 Info (12021): Found 2 design units, including 1 entities, in source file /sources/fpga_cem/fpga-dual-system/board/de10_lite/common/reset_sync.vhd
-    Info (12022): Found design unit 1: reset_sync-rtl File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/common/reset_sync.vhd Line: 17
-    Info (12023): Found entity 1: reset_sync File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/common/reset_sync.vhd Line: 5
+    Info (12022): Found design unit 1: reset_sync-rtl File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/common/reset_sync.vhd Line: 25
+    Info (12023): Found entity 1: reset_sync File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/common/reset_sync.vhd Line: 13
 Info (12021): Found 2 design units, including 1 entities, in source file /sources/fpga_cem/fpga-dual-system/fpga1_acquisition/src/display/bin_to_bcd.vhd
-    Info (12022): Found design unit 1: bin_to_bcd-rtl File: F:/Sources/FPGA_CEM/fpga-dual-system/fpga1_acquisition/src/display/bin_to_bcd.vhd Line: 16
-    Info (12023): Found entity 1: bin_to_bcd File: F:/Sources/FPGA_CEM/fpga-dual-system/fpga1_acquisition/src/display/bin_to_bcd.vhd Line: 5
+    Info (12022): Found design unit 1: bin_to_bcd-rtl File: F:/Sources/FPGA_CEM/fpga-dual-system/fpga1_acquisition/src/display/bin_to_bcd.vhd Line: 18
+    Info (12023): Found entity 1: bin_to_bcd File: F:/Sources/FPGA_CEM/fpga-dual-system/fpga1_acquisition/src/display/bin_to_bcd.vhd Line: 7
 Info (12021): Found 2 design units, including 1 entities, in source file /sources/fpga_cem/fpga-dual-system/fpga1_acquisition/src/display/digit_to_7seg_decimal_n.vhd
     Info (12022): Found design unit 1: digit_to_7seg_decimal_n-rtl File: F:/Sources/FPGA_CEM/fpga-dual-system/fpga1_acquisition/src/display/digit_to_7seg_decimal_n.vhd Line: 11
     Info (12023): Found entity 1: digit_to_7seg_decimal_n File: F:/Sources/FPGA_CEM/fpga-dual-system/fpga1_acquisition/src/display/digit_to_7seg_decimal_n.vhd Line: 4
 Info (12021): Found 2 design units, including 1 entities, in source file /sources/fpga_cem/fpga-dual-system/fpga1_acquisition/src/link_tx/uart_tx.vhd
-    Info (12022): Found design unit 1: uart_tx-rtl File: F:/Sources/FPGA_CEM/fpga-dual-system/fpga1_acquisition/src/link_tx/uart_tx.vhd Line: 23
-    Info (12023): Found entity 1: uart_tx File: F:/Sources/FPGA_CEM/fpga-dual-system/fpga1_acquisition/src/link_tx/uart_tx.vhd Line: 8
+    Info (12022): Found design unit 1: uart_tx-rtl File: F:/Sources/FPGA_CEM/fpga-dual-system/fpga1_acquisition/src/link_tx/uart_tx.vhd Line: 34
+    Info (12023): Found entity 1: uart_tx File: F:/Sources/FPGA_CEM/fpga-dual-system/fpga1_acquisition/src/link_tx/uart_tx.vhd Line: 19
 Info (12021): Found 2 design units, including 1 entities, in source file /sources/fpga_cem/fpga-dual-system/fpga1_acquisition/src/top/fpga1_top.vhd
-    Info (12022): Found design unit 1: fpga1_top-rtl File: F:/Sources/FPGA_CEM/fpga-dual-system/fpga1_acquisition/src/top/fpga1_top.vhd Line: 28
-    Info (12023): Found entity 1: fpga1_top File: F:/Sources/FPGA_CEM/fpga-dual-system/fpga1_acquisition/src/top/fpga1_top.vhd Line: 8
+    Info (12022): Found design unit 1: fpga1_top-rtl File: F:/Sources/FPGA_CEM/fpga-dual-system/fpga1_acquisition/src/top/fpga1_top.vhd Line: 41
+    Info (12023): Found entity 1: fpga1_top File: F:/Sources/FPGA_CEM/fpga-dual-system/fpga1_acquisition/src/top/fpga1_top.vhd Line: 17
 Info (12021): Found 2 design units, including 1 entities, in source file /sources/fpga_cem/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd
-    Info (12022): Found design unit 1: de10_lite_fpga1_wrapper-rtl File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 26
-    Info (12023): Found entity 1: de10_lite_fpga1_wrapper File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 4
+    Info (12022): Found design unit 1: de10_lite_fpga1_wrapper-rtl File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 44
+    Info (12023): Found entity 1: de10_lite_fpga1_wrapper File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 13
 Info (12127): Elaborating entity "de10_lite_fpga1_wrapper" for the top level hierarchy
-Info (12128): Elaborating entity "reset_sync" for hierarchy "reset_sync:u_reset_sync" File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 34
-Info (12128): Elaborating entity "fpga1_top" for hierarchy "fpga1_top:u_core" File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 68
-Info (12128): Elaborating entity "uart_tx" for hierarchy "fpga1_top:u_core|uart_tx:u_uart_tx" File: F:/Sources/FPGA_CEM/fpga-dual-system/fpga1_acquisition/src/top/fpga1_top.vhd Line: 45
+Info (12128): Elaborating entity "reset_sync" for hierarchy "reset_sync:u_reset_sync" File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 61
+Info (12128): Elaborating entity "fpga1_top" for hierarchy "fpga1_top:u_core" File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 131
+Info (12128): Elaborating entity "uart_tx" for hierarchy "fpga1_top:u_core|uart_tx:u_uart_tx" File: F:/Sources/FPGA_CEM/fpga-dual-system/fpga1_acquisition/src/top/fpga1_top.vhd Line: 69
 Warning (13024): Output pins are stuck at VCC or GND
-    Warning (13410): Pin "hex5_n_o[0]" is stuck at VCC File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 16
-    Warning (13410): Pin "hex5_n_o[1]" is stuck at VCC File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 16
-    Warning (13410): Pin "hex5_n_o[2]" is stuck at VCC File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 16
-    Warning (13410): Pin "hex5_n_o[3]" is stuck at VCC File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 16
-    Warning (13410): Pin "hex5_n_o[4]" is stuck at VCC File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 16
-    Warning (13410): Pin "hex5_n_o[5]" is stuck at VCC File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 16
-    Warning (13410): Pin "hex5_n_o[6]" is stuck at VCC File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 16
-    Warning (13410): Pin "hex4_n_o[0]" is stuck at VCC File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 17
-    Warning (13410): Pin "hex4_n_o[1]" is stuck at VCC File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 17
-    Warning (13410): Pin "hex4_n_o[2]" is stuck at VCC File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 17
-    Warning (13410): Pin "hex4_n_o[3]" is stuck at VCC File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 17
-    Warning (13410): Pin "hex4_n_o[4]" is stuck at VCC File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 17
-    Warning (13410): Pin "hex4_n_o[5]" is stuck at VCC File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 17
-    Warning (13410): Pin "hex4_n_o[6]" is stuck at VCC File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 17
-    Warning (13410): Pin "hex3_n_o[0]" is stuck at VCC File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 18
-    Warning (13410): Pin "hex3_n_o[1]" is stuck at VCC File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 18
-    Warning (13410): Pin "hex3_n_o[2]" is stuck at VCC File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 18
-    Warning (13410): Pin "hex3_n_o[3]" is stuck at VCC File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 18
-    Warning (13410): Pin "hex3_n_o[4]" is stuck at VCC File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 18
-    Warning (13410): Pin "hex3_n_o[5]" is stuck at VCC File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 18
-    Warning (13410): Pin "hex3_n_o[6]" is stuck at VCC File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 18
-    Warning (13410): Pin "hex2_n_o[0]" is stuck at VCC File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 19
-    Warning (13410): Pin "hex2_n_o[1]" is stuck at VCC File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 19
-    Warning (13410): Pin "hex2_n_o[2]" is stuck at VCC File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 19
-    Warning (13410): Pin "hex2_n_o[3]" is stuck at VCC File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 19
-    Warning (13410): Pin "hex2_n_o[4]" is stuck at VCC File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 19
-    Warning (13410): Pin "hex2_n_o[5]" is stuck at VCC File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 19
-    Warning (13410): Pin "hex2_n_o[6]" is stuck at VCC File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 19
-    Warning (13410): Pin "hex1_n_o[0]" is stuck at VCC File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 20
-    Warning (13410): Pin "hex1_n_o[1]" is stuck at VCC File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 20
-    Warning (13410): Pin "hex1_n_o[2]" is stuck at VCC File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 20
-    Warning (13410): Pin "hex1_n_o[3]" is stuck at VCC File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 20
-    Warning (13410): Pin "hex1_n_o[4]" is stuck at VCC File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 20
-    Warning (13410): Pin "hex1_n_o[5]" is stuck at VCC File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 20
-    Warning (13410): Pin "hex1_n_o[6]" is stuck at VCC File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 20
-    Warning (13410): Pin "hex0_n_o[0]" is stuck at VCC File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 21
-    Warning (13410): Pin "hex0_n_o[1]" is stuck at VCC File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 21
-    Warning (13410): Pin "hex0_n_o[2]" is stuck at VCC File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 21
-    Warning (13410): Pin "hex0_n_o[3]" is stuck at VCC File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 21
-    Warning (13410): Pin "hex0_n_o[4]" is stuck at VCC File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 21
-    Warning (13410): Pin "hex0_n_o[5]" is stuck at VCC File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 21
-    Warning (13410): Pin "hex0_n_o[6]" is stuck at VCC File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 21
+    Warning (13410): Pin "ledr_o[0]" is stuck at GND File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 31
+    Warning (13410): Pin "ledr_o[1]" is stuck at GND File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 31
+    Warning (13410): Pin "ledr_o[2]" is stuck at GND File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 31
+    Warning (13410): Pin "ledr_o[3]" is stuck at GND File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 31
+    Warning (13410): Pin "ledr_o[4]" is stuck at GND File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 31
+    Warning (13410): Pin "ledr_o[5]" is stuck at GND File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 31
+    Warning (13410): Pin "ledr_o[6]" is stuck at GND File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 31
+    Warning (13410): Pin "ledr_o[7]" is stuck at GND File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 31
+    Warning (13410): Pin "ledr_o[8]" is stuck at GND File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 31
+    Warning (13410): Pin "ledr_o[9]" is stuck at GND File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 31
+    Warning (13410): Pin "hex5_n_o[0]" is stuck at VCC File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 32
+    Warning (13410): Pin "hex5_n_o[1]" is stuck at VCC File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 32
+    Warning (13410): Pin "hex5_n_o[2]" is stuck at VCC File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 32
+    Warning (13410): Pin "hex5_n_o[3]" is stuck at VCC File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 32
+    Warning (13410): Pin "hex5_n_o[4]" is stuck at VCC File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 32
+    Warning (13410): Pin "hex5_n_o[5]" is stuck at VCC File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 32
+    Warning (13410): Pin "hex5_n_o[6]" is stuck at VCC File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 32
+    Warning (13410): Pin "hex4_n_o[0]" is stuck at VCC File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 33
+    Warning (13410): Pin "hex4_n_o[1]" is stuck at VCC File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 33
+    Warning (13410): Pin "hex4_n_o[2]" is stuck at VCC File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 33
+    Warning (13410): Pin "hex4_n_o[3]" is stuck at VCC File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 33
+    Warning (13410): Pin "hex4_n_o[4]" is stuck at VCC File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 33
+    Warning (13410): Pin "hex4_n_o[5]" is stuck at VCC File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 33
+    Warning (13410): Pin "hex4_n_o[6]" is stuck at VCC File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 33
+    Warning (13410): Pin "hex3_n_o[0]" is stuck at VCC File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 34
+    Warning (13410): Pin "hex3_n_o[1]" is stuck at VCC File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 34
+    Warning (13410): Pin "hex3_n_o[2]" is stuck at VCC File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 34
+    Warning (13410): Pin "hex3_n_o[3]" is stuck at VCC File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 34
+    Warning (13410): Pin "hex3_n_o[4]" is stuck at VCC File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 34
+    Warning (13410): Pin "hex3_n_o[5]" is stuck at VCC File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 34
+    Warning (13410): Pin "hex3_n_o[6]" is stuck at VCC File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 34
+    Warning (13410): Pin "hex2_n_o[0]" is stuck at VCC File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 35
+    Warning (13410): Pin "hex2_n_o[1]" is stuck at VCC File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 35
+    Warning (13410): Pin "hex2_n_o[2]" is stuck at VCC File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 35
+    Warning (13410): Pin "hex2_n_o[3]" is stuck at VCC File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 35
+    Warning (13410): Pin "hex2_n_o[4]" is stuck at VCC File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 35
+    Warning (13410): Pin "hex2_n_o[5]" is stuck at VCC File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 35
+    Warning (13410): Pin "hex2_n_o[6]" is stuck at VCC File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 35
+    Warning (13410): Pin "hex1_n_o[0]" is stuck at VCC File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 36
+    Warning (13410): Pin "hex1_n_o[1]" is stuck at VCC File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 36
+    Warning (13410): Pin "hex1_n_o[2]" is stuck at VCC File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 36
+    Warning (13410): Pin "hex1_n_o[3]" is stuck at VCC File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 36
+    Warning (13410): Pin "hex1_n_o[4]" is stuck at VCC File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 36
+    Warning (13410): Pin "hex1_n_o[5]" is stuck at VCC File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 36
+    Warning (13410): Pin "hex1_n_o[6]" is stuck at VCC File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 36
+    Warning (13410): Pin "hex0_n_o[0]" is stuck at VCC File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 37
+    Warning (13410): Pin "hex0_n_o[1]" is stuck at VCC File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 37
+    Warning (13410): Pin "hex0_n_o[2]" is stuck at VCC File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 37
+    Warning (13410): Pin "hex0_n_o[3]" is stuck at VCC File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 37
+    Warning (13410): Pin "hex0_n_o[4]" is stuck at VCC File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 37
+    Warning (13410): Pin "hex0_n_o[5]" is stuck at VCC File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 37
+    Warning (13410): Pin "hex0_n_o[6]" is stuck at VCC File: F:/Sources/FPGA_CEM/fpga-dual-system/board/de10_lite/fpga1/de10_lite_fpga1_wrapper.vhd Line: 37
 Info (286030): Timing-Driven Synthesis is running
 Info (16010): Generating hard_block partition "hard_block:auto_generated_inst"
     Info (16011): Adding 0 node(s), including 0 DDIO, 0 PLL, 0 transceiver and 0 LCELL
-Info (21057): Implemented 184 device resources after synthesis - the final resource count might be different
+Info (21057): Implemented 260 device resources after synthesis - the final resource count might be different
     Info (21058): Implemented 3 input pins
-    Info (21059): Implemented 53 output pins
-    Info (21061): Implemented 128 logic cells
-Info: Quartus Prime Analysis & Synthesis was successful. 0 errors, 44 warnings
-    Info: Peak virtual memory: 4935 megabytes
-    Info: Processing ended: Mon Mar 30 15:12:48 2026
-    Info: Elapsed time: 00:00:11
+    Info (21059): Implemented 54 output pins
+    Info (21061): Implemented 203 logic cells
+Info: Quartus Prime Analysis & Synthesis was successful. 0 errors, 54 warnings
+    Info: Peak virtual memory: 4932 megabytes
+    Info: Processing ended: Thu Apr 23 09:59:05 2026
+    Info: Elapsed time: 00:00:08
     Info: Total CPU time (on all processors): 00:00:16
 
 

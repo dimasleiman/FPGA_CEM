@@ -1,13 +1,13 @@
-Analysis & Synthesis Status : Successful - Mon Mar 30 15:12:48 2026
+Analysis & Synthesis Status : Successful - Thu Apr 23 09:59:05 2026
 Quartus Prime Version : 25.1std.0 Build 1129 10/21/2025 SC Standard Edition
 Revision Name : de10_lite_fpga1_wrapper
 Top-level Entity Name : de10_lite_fpga1_wrapper
 Family : MAX 10
-Total logic elements : 128
-    Total combinational functions : 127
-    Dedicated logic registers : 63
-Total registers : 63
-Total pins : 56
+Total logic elements : 203
+    Total combinational functions : 202
+    Dedicated logic registers : 106
+Total registers : 106
+Total pins : 57
 Total virtual pins : 0
 Total memory bits : 0
 Embedded Multiplier 9-bit elements : 0

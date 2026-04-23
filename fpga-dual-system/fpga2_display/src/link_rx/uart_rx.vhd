@@ -1,3 +1,10 @@
+--uart_rx surveille la ligne série rx.
+--Quand il voit le début d’une trame :
+-- 1.Il attend le milieu du start bit pour vérifier que c’est bien un vrai départ
+-- 2.Il lit ensuite les 8 bits de données un par un
+-- 3.Il vérifie le stop bit
+-- 4.Si tout est correct, il place l’octet dans data_out et met data_valid = 1 pendant un cycle
+
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;

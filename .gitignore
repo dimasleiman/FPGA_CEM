@@ -6,15 +6,20 @@
 # Python cache
 __pycache__/
 *.pyc
+tools/
 
 # OS-generated files
 Thumbs.db
 Desktop.ini
 
+# Local backup files
+*.bak
+
 # Intel Quartus generated state and build outputs
 **/quartus/db/
 **/quartus/incremental_db/
 **/quartus/output_files/
+**/quartus/.qsys_edit/
 **/quartus/*.qws
 **/quartus/*.smsg
 **/quartus/*.summary
@@ -42,6 +47,7 @@ vsim.wlf
 *.log
 *.jou
 *.pb
+/work-obj08.cf
 *.cf
 work/
 questa_lib/
@@ -49,3 +55,7 @@ simv
 simv.daidir/
 csrc/
 .ghdl*
+.codex
+MEMORY.md
+CLAUDE.md
+AGENTS.md

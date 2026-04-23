@@ -9,6 +9,8 @@ set_global_assignment -name SDC_FILE [file join $this_dir de10_lite_fpga2_wrappe
 
 set_global_assignment -name VHDL_FILE [file join $project_dir board de10_lite common reset_sync.vhd]
 set_global_assignment -name VHDL_FILE [file join $project_dir shared rtl dual_fpga_system_pkg.vhd]
+set_global_assignment -name VHDL_FILE [file join $project_dir fpga1_acquisition src display bin_to_bcd.vhd]
+set_global_assignment -name VHDL_FILE [file join $project_dir fpga1_acquisition src display digit_to_7seg_decimal_n.vhd]
 set_global_assignment -name VHDL_FILE [file join $project_dir fpga2_display src link_rx uart_rx.vhd]
 set_global_assignment -name VHDL_FILE [file join $project_dir fpga2_display src top fpga2_top.vhd]
 set_global_assignment -name VHDL_FILE [file join $project_dir board de10_lite fpga2 de10_lite_fpga2_wrapper.vhd]
